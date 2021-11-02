@@ -1,0 +1,5254 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>RMarkdown</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="Tom Mock, PhD • RStudio" />
+    <meta name="date" content="2021-11-02" />
+    <script src="libs/header-attrs/header-attrs.js"></script>
+    <link href="libs/remark-css/default.css" rel="stylesheet" />
+    <meta name="github-repo" content="jthomasmock/rmd-nhs"/>
+    <meta name="twitter:title" content="RMarkdown for reproducible reporting"/>
+    <meta name="twitter:description" content="An introduction to the RMarkdown package for reproducible reporting in RStudio"/>
+    <meta name="twitter:url" content="https://jthomasmock.github.io/rmd-nhs/index.html"/>
+    <meta name="twitter:image" content="https://images.unsplash.com/photo-1436918898788-ebce04d38e46?ixlib=rb-1.2.1&amp;ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&amp;auto=format&amp;fit=crop&amp;w=1471&amp;q=80"/>
+    <meta name="twitter:card" content="summary_large_image"/>
+    <meta name="twitter:creator" content="@thomas_mock"/>
+    <meta name="twitter:site" content="@thomas_mock"/>
+    <meta property="og:title" content="RMarkdown for reproducible reporting"/>
+    <meta property="og:description" content="An introduction to the RMarkdown package for reproducible reporting in RStudio"/>
+    <meta property="og:url" content="https://jthomasmock.github.io/rmd-nhs/index.html"/>
+    <meta property="og:image" content="https://images.unsplash.com/photo-1436918898788-ebce04d38e46?ixlib=rb-1.2.1&amp;ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&amp;auto=format&amp;fit=crop&amp;w=1471&amp;q=80"/>
+    <meta property="og:type" content="website"/>
+    <meta property="og:locale" content="en_US"/>
+    <meta property="article:author" content="Tom Mock"/>
+    <link rel="stylesheet" href="css/my-theme.css" type="text/css" />
+    <link rel="stylesheet" href="css/my-fonts.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+
+
+
+
+
+
+class: title-slide, left, top
+
+# RMarkdown:
+
+## reproducible reporting
+
+### Tom Mock, PhD • RStudio
+
+### 2021-11-02
+
+&lt;br&gt;
+
+<svg aria-hidden="true" role="img" viewBox="0 0 512 512" style="height:1em;width:1em;vertical-align:-0.125em;margin-left:auto;margin-right:auto;font-size:inherit;fill:white;overflow:visible;position:relative;"><path d="M326.612 185.391c59.747 59.809 58.927 155.698.36 214.59-.11.12-.24.25-.36.37l-67.2 67.2c-59.27 59.27-155.699 59.262-214.96 0-59.27-59.26-59.27-155.7 0-214.96l37.106-37.106c9.84-9.84 26.786-3.3 27.294 10.606.648 17.722 3.826 35.527 9.69 52.721 1.986 5.822.567 12.262-3.783 16.612l-13.087 13.087c-28.026 28.026-28.905 73.66-1.155 101.96 28.024 28.579 74.086 28.749 102.325.51l67.2-67.19c28.191-28.191 28.073-73.757 0-101.83-3.701-3.694-7.429-6.564-10.341-8.569a16.037 16.037 0 0 1-6.947-12.606c-.396-10.567 3.348-21.456 11.698-29.806l21.054-21.055c5.521-5.521 14.182-6.199 20.584-1.731a152.482 152.482 0 0 1 20.522 17.197zM467.547 44.449c-59.261-59.262-155.69-59.27-214.96 0l-67.2 67.2c-.12.12-.25.25-.36.37-58.566 58.892-59.387 154.781.36 214.59a152.454 152.454 0 0 0 20.521 17.196c6.402 4.468 15.064 3.789 20.584-1.731l21.054-21.055c8.35-8.35 12.094-19.239 11.698-29.806a16.037 16.037 0 0 0-6.947-12.606c-2.912-2.005-6.64-4.875-10.341-8.569-28.073-28.073-28.191-73.639 0-101.83l67.2-67.19c28.239-28.239 74.3-28.069 102.325.51 27.75 28.3 26.872 73.934-1.155 101.96l-13.087 13.087c-4.35 4.35-5.769 10.79-3.783 16.612 5.864 17.194 9.042 34.999 9.69 52.721.509 13.906 17.454 20.446 27.294 10.606l37.106-37.106c59.271-59.259 59.271-155.699.001-214.959z"/></svg> [jthomasmock.github.io/rmd-nhs/index.html](https://jthomasmock.github.io/rmd-nhs/index.html)   
+
+&lt;span style='color:white;'&gt;Slides released under&lt;/span&gt; [CC-BY 2.0](https://creativecommons.org/licenses/by/2.0/)&amp;nbsp;&amp;nbsp;<svg aria-hidden="true" role="img" viewBox="0 0 496 512" style="height:1em;width:0.97em;vertical-align:-0.125em;margin-left:auto;margin-right:auto;font-size:inherit;fill:white;overflow:visible;position:relative;"><path d="M245.83 214.87l-33.22 17.28c-9.43-19.58-25.24-19.93-27.46-19.93-22.13 0-33.22 14.61-33.22 43.84 0 23.57 9.21 43.84 33.22 43.84 14.47 0 24.65-7.09 30.57-21.26l30.55 15.5c-6.17 11.51-25.69 38.98-65.1 38.98-22.6 0-73.96-10.32-73.96-77.05 0-58.69 43-77.06 72.63-77.06 30.72-.01 52.7 11.95 65.99 35.86zm143.05 0l-32.78 17.28c-9.5-19.77-25.72-19.93-27.9-19.93-22.14 0-33.22 14.61-33.22 43.84 0 23.55 9.23 43.84 33.22 43.84 14.45 0 24.65-7.09 30.54-21.26l31 15.5c-2.1 3.75-21.39 38.98-65.09 38.98-22.69 0-73.96-9.87-73.96-77.05 0-58.67 42.97-77.06 72.63-77.06 30.71-.01 52.58 11.95 65.56 35.86zM247.56 8.05C104.74 8.05 0 123.11 0 256.05c0 138.49 113.6 248 247.56 248 129.93 0 248.44-100.87 248.44-248 0-137.87-106.62-248-248.44-248zm.87 450.81c-112.54 0-203.7-93.04-203.7-202.81 0-105.42 85.43-203.27 203.72-203.27 112.53 0 202.82 89.46 202.82 203.26-.01 121.69-99.68 202.82-202.84 202.82z"/></svg><svg aria-hidden="true" role="img" viewBox="0 0 496 512" style="height:1em;width:0.97em;vertical-align:-0.125em;margin-left:auto;margin-right:auto;font-size:inherit;fill:white;overflow:visible;position:relative;"><path d="M314.9 194.4v101.4h-28.3v120.5h-77.1V295.9h-28.3V194.4c0-4.4 1.6-8.2 4.6-11.3 3.1-3.1 6.9-4.7 11.3-4.7H299c4.1 0 7.8 1.6 11.1 4.7 3.1 3.2 4.8 6.9 4.8 11.3zm-101.5-63.7c0-23.3 11.5-35 34.5-35s34.5 11.7 34.5 35c0 23-11.5 34.5-34.5 34.5s-34.5-11.5-34.5-34.5zM247.6 8C389.4 8 496 118.1 496 256c0 147.1-118.5 248-248.4 248C113.6 504 0 394.5 0 256 0 123.1 104.7 8 247.6 8zm.8 44.7C130.2 52.7 44.7 150.6 44.7 256c0 109.8 91.2 202.8 203.7 202.8 103.2 0 202.8-81.1 202.8-202.8.1-113.8-90.2-203.3-202.8-203.3z"/></svg> ]   
+
+&lt;div style = "position: absolute;top: -50px;right: -200px;"&gt;&lt;img src="images/letters.png" alt="A collection of wooden letters loosely arranged. The letters are used for stamps." width="800"&gt;&lt;/img&gt;&lt;/div&gt;
+
+&lt;div style = "position: absolute;bottom: 5px;right:25px;font-size:8px;color:white;"&gt;Image Credit: Bruno Martins, unsplash.com/photos/OhJmwB4XWLE&lt;/div&gt;
+
+---
+
+layout: true
+
+&lt;div class="my-footer"&gt;&lt;span&gt;colorado.rstudio.com/rsc/cs-prez/&lt;/span&gt;&lt;/div&gt;
+
+---
+
+# Resources:
+
+### RStudio Cloud materials
+
+### Slides: 
+
+Some content adapted from superstar Dr. Alison Hill [CDC](https://www.apreshill.com/talk/2020-rmd4cdc/) &amp; [R4Pharma](https://rmd4pharma.netlify.app/): CC-BY
+
+---
+
+### What is R Markdown?
+
+1. ["An authoring framework for data science."](https://rmarkdown.rstudio.com/lesson-1.html) (✔️)  
+
+1. [A document format (.Rmd).](https://bookdown.org/yihui/rmarkdown/) (✔️)  
+
+1. [An R package named rmarkdown.](https://rmarkdown.rstudio.com/docs/) (✔️)  
+
+1. ["A file format for making dynamic documents with R."](https://rmarkdown.rstudio.com/articles_intro.html) (✔️)  
+
+1. ["A tool for integrating text, code, and results."](https://r4ds.had.co.nz/communicate-intro.html) (✔️)  
+
+1. ["A computational document."](http://radar.oreilly.com/2011/07/wolframs-computational-documen.html) (✔️)  
+
+--
+
+1. Magic (🧙️)  
+
+---
+
+background-image: url("https://raw.githubusercontent.com/allisonhorst/stats-illustrations/master/rstats-artwork/rmarkdown_wizards.png")
+background-position: center
+background-size: contain
+
+---
+
+### Why RMarkdown?
+
+1. Reproducibility
+
+--
+
+2. Re-usability
+
+--
+
+3. Extensibility
+
+--
+
+4. "Lazy" ability
+
+---
+
+### Change your mental model
+
+.pull-left[
+#### Source &lt;-&gt; Output
+
+&lt;img src="images/word.png" width="50%" /&gt;
+
+]
+
+--
+
+.pull-right[
+
+#### Source -&gt; Output
+
+&lt;img src="images/rmd-file.png" width="50%" /&gt;
+
+]
+
+---
+
+### R Markdown
+
+&gt; R Markdown documents are fully reproducible. Use a productive notebook interface to weave together narrative text and code to produce elegantly formatted output. Use multiple languages including R, Python, and SQL.
+
+--
+
+No more copy-paste, no more manually rebuilding analyses from disparate components, no more dread when the data is updated and you need to run an analysis.
+
+---
+
+background-image: url("https://images.unsplash.com/4/madebyvadim.jpg?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&amp;ixlib=rb-1.2.1&amp;auto=format&amp;fit=crop&amp;w=1469&amp;q=80")
+background-position: center
+background-size: fill
+class: center, middle
+
+--
+
+&lt;h1 style='color:black;background-color: rgba(255,255,255,0.75);padding:5px;line-height:2em;'&gt;Ease of Use VS Full Details&lt;/h1&gt;
+
+---
+
+### Pouring milk
+
+A straight-forward task - pour the boxed milk into the glass.
+
+--
+
+.pull-left[
+
+&gt; Easy to use  
+
+![Person pouring milk with quite a bit of spilling](https://j.gifs.com/WPwJ1W.gif)
+
+]
+
+--
+
+.pull-right[
+
+&gt; Understanding the Full details  
+
+![Person pouring box of milk with the cap facing up, resulting in no spilling.](https://j.gifs.com/z6BO57.gif)
+
+]
+
+---
+
+
+
+
+.pull-left[
+
+### Many [RMarkdown Formats](https://rmarkdown.rstudio.com/formats.html)
+
+<div id="btdqvhygmd" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>@import url("https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Fira+Mono:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Source+Sans+Pro:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Libre+Franklin:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Source+Sans+Pro:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
+html {
+  font-family: 'Open Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
+}
+
+#btdqvhygmd .gt_table {
+  display: table;
+  border-collapse: collapse;
+  margin-left: auto;
+  margin-right: auto;
+  color: #333333;
+  font-size: 16px;
+  font-weight: normal;
+  font-style: none;
+  background-color: #FFFFFF;
+  width: auto;
+  border-top-style: none;
+  border-top-width: 2px;
+  border-top-color: #A8A8A8;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #A8A8A8;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+}
+
+#btdqvhygmd .gt_heading {
+  background-color: #FFFFFF;
+  text-align: left;
+  border-bottom-color: #FFFFFF;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#btdqvhygmd .gt_title {
+  color: #333333;
+  font-size: 125%;
+  font-weight: initial;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  border-bottom-color: #FFFFFF;
+  border-bottom-width: 0;
+}
+
+#btdqvhygmd .gt_subtitle {
+  color: #333333;
+  font-size: 85%;
+  font-weight: initial;
+  padding-top: 0;
+  padding-bottom: 6px;
+  border-top-color: #FFFFFF;
+  border-top-width: 0;
+}
+
+#btdqvhygmd .gt_bottom_border {
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#btdqvhygmd .gt_col_headings {
+  border-top-style: none;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: none;
+  border-bottom-width: 1px;
+  border-bottom-color: #334422;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#btdqvhygmd .gt_col_heading {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 6px;
+  padding-left: 5px;
+  padding-right: 5px;
+  overflow-x: hidden;
+}
+
+#btdqvhygmd .gt_column_spanner_outer {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  padding-top: 0;
+  padding-bottom: 0;
+  padding-left: 4px;
+  padding-right: 4px;
+}
+
+#btdqvhygmd .gt_column_spanner_outer:first-child {
+  padding-left: 0;
+}
+
+#btdqvhygmd .gt_column_spanner_outer:last-child {
+  padding-right: 0;
+}
+
+#btdqvhygmd .gt_column_spanner {
+  border-bottom-style: none;
+  border-bottom-width: 1px;
+  border-bottom-color: #334422;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  overflow-x: hidden;
+  display: inline-block;
+  width: 100%;
+}
+
+#btdqvhygmd .gt_group_heading {
+  padding: 8px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-top-style: none;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+}
+
+#btdqvhygmd .gt_empty_group_heading {
+  padding: 0.5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  border-top-style: none;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: middle;
+}
+
+#btdqvhygmd .gt_from_md > :first-child {
+  margin-top: 0;
+}
+
+#btdqvhygmd .gt_from_md > :last-child {
+  margin-bottom: 0;
+}
+
+#btdqvhygmd .gt_row {
+  padding-top: 7px;
+  padding-bottom: 7px;
+  padding-left: 5px;
+  padding-right: 5px;
+  margin: 10px;
+  border-top-style: none;
+  border-top-width: 1px;
+  border-top-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  overflow-x: hidden;
+}
+
+#btdqvhygmd .gt_stub {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 12px;
+}
+
+#btdqvhygmd .gt_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#btdqvhygmd .gt_first_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-style: none;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+}
+
+#btdqvhygmd .gt_grand_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#btdqvhygmd .gt_first_grand_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-style: none;
+  border-top-width: 6px;
+  border-top-color: #D3D3D3;
+}
+
+#btdqvhygmd .gt_striped {
+  background-color: rgba(128, 128, 128, 0.05);
+}
+
+#btdqvhygmd .gt_table_body {
+  border-top-style: none;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #FFFFFF;
+}
+
+#btdqvhygmd .gt_footnotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#btdqvhygmd .gt_footnote {
+  margin: 0px;
+  font-size: 90%;
+  padding: 4px;
+}
+
+#btdqvhygmd .gt_sourcenotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#btdqvhygmd .gt_sourcenote {
+  font-size: 90%;
+  padding: 4px;
+}
+
+#btdqvhygmd .gt_left {
+  text-align: left;
+}
+
+#btdqvhygmd .gt_center {
+  text-align: center;
+}
+
+#btdqvhygmd .gt_right {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+#btdqvhygmd .gt_font_normal {
+  font-weight: normal;
+}
+
+#btdqvhygmd .gt_font_bold {
+  font-weight: bold;
+}
+
+#btdqvhygmd .gt_font_italic {
+  font-style: italic;
+}
+
+#btdqvhygmd .gt_super {
+  font-size: 65%;
+}
+
+#btdqvhygmd .gt_footnote_marks {
+  font-style: italic;
+  font-weight: normal;
+  font-size: 65%;
+}
+</style>
+<table class="gt_table">
+  
+  <thead class="gt_col_headings">
+    <tr>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1"></th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" style="color: #A9A9A9; font-family: &#39;Source Sans Pro&#39;; font-size: 12px; text-transform: uppercase;"></th>
+    </tr>
+  </thead>
+  <tbody class="gt_table_body">
+    <tr class="gt_group_heading_row">
+      <td colspan="2" class="gt_group_heading" style="border-bottom-width: 3px; border-bottom-style: solid; border-bottom-color: black; color: #000000; font-weight: bold; background-color: #D3D3D3;">Documents</td>
+    </tr>
+    <tr><td class="gt_row gt_left gt_stub" style="font-family: 'Fira Mono';"><a href ='https://bookdown.org/yihui/rmarkdown/notebook.html' style='text-decoration:none;' target='_blank'>
+Notebook</a></td>
+<td class="gt_row gt_left" style="font-family: 'Source Sans Pro'; font-weight: 400;">Interactive R Notebooks</td></tr>
+    <tr><td class="gt_row gt_left gt_stub" style="font-family: 'Fira Mono';"><a href ='https://bookdown.org/yihui/rmarkdown/html-document.html' style='text-decoration:none;' target='_blank'>
+HTML</a></td>
+<td class="gt_row gt_left" style="font-family: 'Source Sans Pro'; font-weight: 400;">HTML document w/ Bootstrap CSS</td></tr>
+    <tr><td class="gt_row gt_left gt_stub" style="font-family: 'Fira Mono';"><a href ='https://bookdown.org/yihui/rmarkdown/pdf-document.html' style='text-decoration:none;' target='_blank'>
+PDF</a></td>
+<td class="gt_row gt_left" style="font-family: 'Source Sans Pro'; font-weight: 400;">PDF document (via LaTeX template)</td></tr>
+    <tr><td class="gt_row gt_left gt_stub" style="font-family: 'Fira Mono';"><a href ='https://bookdown.org/yihui/rmarkdown/word-document.html' style='text-decoration:none;' target='_blank'>
+Word</a></td>
+<td class="gt_row gt_left" style="font-family: 'Source Sans Pro'; font-weight: 400;">Microsoft Word document (docx)</td></tr>
+    <tr><td class="gt_row gt_left gt_stub" style="font-family: 'Fira Mono';"><a href ='https://bookdown.org/yihui/rmarkdown/opendocument-text-document.html' style='text-decoration:none;' target='_blank'>
+ODT</a></td>
+<td class="gt_row gt_left" style="font-family: 'Source Sans Pro'; font-weight: 400;">OpenDocument Text document</td></tr>
+    <tr><td class="gt_row gt_left gt_stub" style="font-family: 'Fira Mono';"><a href ='https://bookdown.org/yihui/rmarkdown/rich-text-format-document.html' style='text-decoration:none;' target='_blank'>
+RTF</a></td>
+<td class="gt_row gt_left" style="font-family: 'Source Sans Pro'; font-weight: 400;">Rich Text Format document</td></tr>
+    <tr><td class="gt_row gt_left gt_stub" style="font-family: 'Fira Mono';"><a href ='https://bookdown.org/yihui/rmarkdown/markdown-document.html' style='text-decoration:none;' target='_blank'>
+Markdown</a></td>
+<td class="gt_row gt_left" style="font-family: 'Source Sans Pro'; font-weight: 400;">Markdown document (various flavors)</td></tr>
+    <tr class="gt_group_heading_row">
+      <td colspan="2" class="gt_group_heading" style="border-bottom-width: 3px; border-bottom-style: solid; border-bottom-color: black; color: #000000; font-weight: bold; background-color: #D3D3D3;">Presentations</td>
+    </tr>
+    <tr><td class="gt_row gt_left gt_stub" style="font-family: 'Fira Mono';"><a href ='https://bookdown.org/yihui/rmarkdown/ioslides-presentation.html' style='text-decoration:none;' target='_blank'>
+ioslides</a></td>
+<td class="gt_row gt_left" style="font-family: 'Source Sans Pro'; font-weight: 400;">HTML presentation with ioslides</td></tr>
+    <tr><td class="gt_row gt_left gt_stub" style="font-family: 'Fira Mono';"><a href ='https://bookdown.org/yihui/rmarkdown/revealjs.html' style='text-decoration:none;' target='_blank'>
+reveal.js</a></td>
+<td class="gt_row gt_left" style="font-family: 'Source Sans Pro'; font-weight: 400;">HTML presentation with reveal.js</td></tr>
+    <tr><td class="gt_row gt_left gt_stub" style="font-family: 'Fira Mono';"><a href ='https://bookdown.org/yihui/rmarkdown/slidy-presentation.html' style='text-decoration:none;' target='_blank'>
+Slidy</a></td>
+<td class="gt_row gt_left" style="font-family: 'Source Sans Pro'; font-weight: 400;">HTML presentation with W3C Slidy</td></tr>
+    <tr><td class="gt_row gt_left gt_stub" style="font-family: 'Fira Mono';"><a href ='https://bookdown.org/yihui/rmarkdown/beamer-presentation.html' style='text-decoration:none;' target='_blank'>
+Beamer</a></td>
+<td class="gt_row gt_left" style="font-family: 'Source Sans Pro'; font-weight: 400;">PDF presentation with LaTeX Beamer</td></tr>
+    <tr><td class="gt_row gt_left gt_stub" style="font-family: 'Fira Mono';"><a href ='https://bookdown.org/yihui/rmarkdown/powerpoint-presentation.html' style='text-decoration:none;' target='_blank'>
+PowerPoint</a></td>
+<td class="gt_row gt_left" style="font-family: 'Source Sans Pro'; font-weight: 400;">PowerPoint presentation</td></tr>
+  </tbody>
+  
+  
+</table>
+</div>
+
+]
+
+--
+
+.pull-right[
+<div id="hbphngcusp" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>@import url("https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Fira+Mono:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Source+Sans+Pro:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Libre+Franklin:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Source+Sans+Pro:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
+html {
+  font-family: 'Open Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
+}
+
+#hbphngcusp .gt_table {
+  display: table;
+  border-collapse: collapse;
+  margin-left: auto;
+  margin-right: auto;
+  color: #333333;
+  font-size: 16px;
+  font-weight: normal;
+  font-style: none;
+  background-color: #FFFFFF;
+  width: auto;
+  border-top-style: none;
+  border-top-width: 2px;
+  border-top-color: #A8A8A8;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #A8A8A8;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+}
+
+#hbphngcusp .gt_heading {
+  background-color: #FFFFFF;
+  text-align: left;
+  border-bottom-color: #FFFFFF;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#hbphngcusp .gt_title {
+  color: #333333;
+  font-size: 125%;
+  font-weight: initial;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  border-bottom-color: #FFFFFF;
+  border-bottom-width: 0;
+}
+
+#hbphngcusp .gt_subtitle {
+  color: #333333;
+  font-size: 85%;
+  font-weight: initial;
+  padding-top: 0;
+  padding-bottom: 6px;
+  border-top-color: #FFFFFF;
+  border-top-width: 0;
+}
+
+#hbphngcusp .gt_bottom_border {
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#hbphngcusp .gt_col_headings {
+  border-top-style: none;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: none;
+  border-bottom-width: 1px;
+  border-bottom-color: #334422;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#hbphngcusp .gt_col_heading {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 6px;
+  padding-left: 5px;
+  padding-right: 5px;
+  overflow-x: hidden;
+}
+
+#hbphngcusp .gt_column_spanner_outer {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  padding-top: 0;
+  padding-bottom: 0;
+  padding-left: 4px;
+  padding-right: 4px;
+}
+
+#hbphngcusp .gt_column_spanner_outer:first-child {
+  padding-left: 0;
+}
+
+#hbphngcusp .gt_column_spanner_outer:last-child {
+  padding-right: 0;
+}
+
+#hbphngcusp .gt_column_spanner {
+  border-bottom-style: none;
+  border-bottom-width: 1px;
+  border-bottom-color: #334422;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  overflow-x: hidden;
+  display: inline-block;
+  width: 100%;
+}
+
+#hbphngcusp .gt_group_heading {
+  padding: 8px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-top-style: none;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+}
+
+#hbphngcusp .gt_empty_group_heading {
+  padding: 0.5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  border-top-style: none;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: middle;
+}
+
+#hbphngcusp .gt_from_md > :first-child {
+  margin-top: 0;
+}
+
+#hbphngcusp .gt_from_md > :last-child {
+  margin-bottom: 0;
+}
+
+#hbphngcusp .gt_row {
+  padding-top: 7px;
+  padding-bottom: 7px;
+  padding-left: 5px;
+  padding-right: 5px;
+  margin: 10px;
+  border-top-style: none;
+  border-top-width: 1px;
+  border-top-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  overflow-x: hidden;
+}
+
+#hbphngcusp .gt_stub {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 12px;
+}
+
+#hbphngcusp .gt_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#hbphngcusp .gt_first_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-style: none;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+}
+
+#hbphngcusp .gt_grand_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#hbphngcusp .gt_first_grand_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-style: none;
+  border-top-width: 6px;
+  border-top-color: #D3D3D3;
+}
+
+#hbphngcusp .gt_striped {
+  background-color: rgba(128, 128, 128, 0.05);
+}
+
+#hbphngcusp .gt_table_body {
+  border-top-style: none;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #FFFFFF;
+}
+
+#hbphngcusp .gt_footnotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#hbphngcusp .gt_footnote {
+  margin: 0px;
+  font-size: 90%;
+  padding: 4px;
+}
+
+#hbphngcusp .gt_sourcenotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#hbphngcusp .gt_sourcenote {
+  font-size: 90%;
+  padding: 4px;
+}
+
+#hbphngcusp .gt_left {
+  text-align: left;
+}
+
+#hbphngcusp .gt_center {
+  text-align: center;
+}
+
+#hbphngcusp .gt_right {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+#hbphngcusp .gt_font_normal {
+  font-weight: normal;
+}
+
+#hbphngcusp .gt_font_bold {
+  font-weight: bold;
+}
+
+#hbphngcusp .gt_font_italic {
+  font-style: italic;
+}
+
+#hbphngcusp .gt_super {
+  font-size: 65%;
+}
+
+#hbphngcusp .gt_footnote_marks {
+  font-style: italic;
+  font-weight: normal;
+  font-size: 65%;
+}
+</style>
+<table class="gt_table">
+  
+  <thead class="gt_col_headings">
+    <tr>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1"></th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" style="color: #A9A9A9; font-family: &#39;Source Sans Pro&#39;; font-size: 12px; text-transform: uppercase;"></th>
+    </tr>
+  </thead>
+  <tbody class="gt_table_body">
+    <tr class="gt_group_heading_row">
+      <td colspan="2" class="gt_group_heading" style="border-bottom-width: 3px; border-bottom-style: solid; border-bottom-color: black; color: #000000; font-weight: bold; background-color: #D3D3D3;">Journals</td>
+    </tr>
+    <tr><td class="gt_row gt_left gt_stub" style="font-family: 'Fira Mono';"><a href ='https://rstudio.github.io/distill/' style='text-decoration:none;' target='_blank'>
+distill</a></td>
+<td class="gt_row gt_left" style="font-family: 'Source Sans Pro'; font-weight: 400;">Scientific and technical writing for the web</td></tr>
+    <tr><td class="gt_row gt_left gt_stub" style="font-family: 'Fira Mono';"><a href ='https://github.com/rstudio/rticles' style='text-decoration:none;' target='_blank'>
+jss_article</a></td>
+<td class="gt_row gt_left" style="font-family: 'Source Sans Pro'; font-weight: 400;">Journal of Statistical Software (JSS)</td></tr>
+    <tr><td class="gt_row gt_left gt_stub" style="font-family: 'Fira Mono';"><a href ='https://github.com/rstudio/rticles' style='text-decoration:none;' target='_blank'>
+acm_article</a></td>
+<td class="gt_row gt_left" style="font-family: 'Source Sans Pro'; font-weight: 400;">Association for Computing Machinery (ACM)</td></tr>
+    <tr><td class="gt_row gt_left gt_stub" style="font-family: 'Fira Mono';"><a href ='https://github.com/rstudio/rticles' style='text-decoration:none;' target='_blank'>
+acs_article</a></td>
+<td class="gt_row gt_left" style="font-family: 'Source Sans Pro'; font-weight: 400;">American Chemical Society (ACS) Journal</td></tr>
+    <tr><td class="gt_row gt_left gt_stub" style="font-family: 'Fira Mono';"><a href ='https://github.com/rstudio/rticles' style='text-decoration:none;' target='_blank'>
+ctex</a></td>
+<td class="gt_row gt_left" style="font-family: 'Source Sans Pro'; font-weight: 400;">Documents based on the LaTeX package ctex</td></tr>
+    <tr><td class="gt_row gt_left gt_stub" style="font-family: 'Fira Mono';"><a href ='https://github.com/rstudio/rticles' style='text-decoration:none;' target='_blank'>
+elsevier_article</a></td>
+<td class="gt_row gt_left" style="font-family: 'Source Sans Pro'; font-weight: 400;">Submissions to Elsevier journals</td></tr>
+    <tr class="gt_group_heading_row">
+      <td colspan="2" class="gt_group_heading" style="border-bottom-width: 3px; border-bottom-style: solid; border-bottom-color: black; color: #000000; font-weight: bold; background-color: #D3D3D3;">More</td>
+    </tr>
+    <tr><td class="gt_row gt_left gt_stub" style="font-family: 'Fira Mono';"><a href ='flexdashboard/index.html' style='text-decoration:none;' target='_blank'>
+flexdashboard</a></td>
+<td class="gt_row gt_left" style="font-family: 'Source Sans Pro'; font-weight: 400;">Interactive dashboards</td></tr>
+    <tr><td class="gt_row gt_left gt_stub" style="font-family: 'Fira Mono';"><a href ='https://bookdown.org' style='text-decoration:none;' target='_blank'>
+bookdown</a></td>
+<td class="gt_row gt_left" style="font-family: 'Source Sans Pro'; font-weight: 400;">HTML, PDF, ePub, and Kindle books</td></tr>
+    <tr><td class="gt_row gt_left gt_stub" style="font-family: 'Fira Mono';"><a href ='https://bookdown.org/yihui/rmarkdown/rmarkdown-site.html' style='text-decoration:none;' target='_blank'>
+Websites</a></td>
+<td class="gt_row gt_left" style="font-family: 'Source Sans Pro'; font-weight: 400;">Multi-page websites</td></tr>
+    <tr><td class="gt_row gt_left gt_stub" style="font-family: 'Fira Mono';"><a href ='https://bookdown.org/yihui/blogdown/' style='text-decoration:none;' target='_blank'>
+blogdown</a></td>
+<td class="gt_row gt_left" style="font-family: 'Source Sans Pro'; font-weight: 400;">Customizable websites and blogs</td></tr>
+    <tr><td class="gt_row gt_left gt_stub" style="font-family: 'Fira Mono';"><a href ='https://pkgdown.r-lib.org/' style='text-decoration:none;' target='_blank'>
+pkgdown</a></td>
+<td class="gt_row gt_left" style="font-family: 'Source Sans Pro'; font-weight: 400;">Package documentation websites</td></tr>
+    <tr><td class="gt_row gt_left gt_stub" style="font-family: 'Fira Mono';"><a href ='https://bookdown.org/yihui/rmarkdown/tufte-handouts.html' style='text-decoration:none;' target='_blank'>
+Tufte Handout</a></td>
+<td class="gt_row gt_left" style="font-family: 'Source Sans Pro'; font-weight: 400;">Handouts in the style of Edward Tufte</td></tr>
+    <tr><td class="gt_row gt_left gt_stub" style="font-family: 'Fira Mono';"><a href ='https://bookdown.org/yihui/rmarkdown/r-package-vignette.html' style='text-decoration:none;' target='_blank'>
+Package Vignette</a></td>
+<td class="gt_row gt_left" style="font-family: 'Source Sans Pro'; font-weight: 400;">R package vignette (HTML)</td></tr>
+    <tr><td class="gt_row gt_left gt_stub" style="font-family: 'Fira Mono';"><a href ='github_document_format.html' style='text-decoration:none;' target='_blank'>
+Github Document</a></td>
+<td class="gt_row gt_left" style="font-family: 'Source Sans Pro'; font-weight: 400;">GitHub Flavored Markdown document.</td></tr>
+  </tbody>
+  
+  
+</table>
+</div>
+
+]
+
+---
+
+### Anatomy of RMarkdown
+
+- Metadata (YAML)
+
+```
+---
+output: html_document
+---
+```
+
+--
+
+- Code
+
+````md
+
+```{r basicExample, echo = TRUE}
+library(dplyr)
+mtcars %&gt;% 
+  group_by(cyl) %&gt;% 
+  summarize(n = n(), mean = mean(mpg))
+```
+
+````
+
+--
+
+- Text
+
+```
+# Heading 1
+This is a sentence with some **bold text**, some *italic text* and an [image](image.png).
+```
+---
+
+### Metadata: YAML
+
+The [YAML](https://yaml.org/) metadata or header is:
+
+&gt; processed in many stages of the rendering process and can influence the final document in many different ways. It is placed at the very beginning of the document and is read by each of Pandoc, rmarkdown, and knitr. Along the way, the information that it contains can affect the code, content, and the rendering process. - [RMarkdown Cookbook](https://bookdown.org/yihui/rmarkdown-cookbook/rmarkdown-anatomy.html)
+
+--
+
+A generic YAML follows a pattern like the below:
+
+```
+---
+key: value
+---
+```
+
+Valid YAML requires 3 dashes `---` on either end, creating the YAML block, with `key` + `value` pairs assigned throughout.
+
+---
+
+### Metadata: YAML
+
+Specific metadata about the document and rendering options are included in this YAML header.
+
+Note that if you want to find out what type of options are available, you can run `?rmarkdown::html_document()` or `?rmarkdown::pdf_document()`, etc, to show the specific rendering options for _that_ specific output format. There is also a [`rmarkdown` `pkgdown` site](https://rmarkdown.rstudio.com/docs/reference/html_document.html), so you can explore specific options there as well.
+
+
+---
+
+
+### Output options
+
+```
+---
+output: html_document
+---
+```
+
+&lt;img src="https://d33wubrfki0l68.cloudfront.net/aee91187a9c6811a802ddc524c3271302893a149/a7003/images/bandthree2.png" title="Image of the letter R slightly tilted, along with the various RMarkdown outputs scattered around it. It includes HTML logo, PDF, a report, a dashboard, Word, Tufte, ePUB, kindle and LATEX" alt="Image of the letter R slightly tilted, along with the various RMarkdown outputs scattered around it. It includes HTML logo, PDF, a report, a dashboard, Word, Tufte, ePUB, kindle and LATEX" width="30%" /&gt;
+
+
+---
+
+### Specify output options in YAML
+
+.pull-left[
+```
+---
+title: My First RMarkdown Report
+author: Tom Mock
+output: html_document
+---
+```
+
+]
+
+---
+
+### Specify output options in YAML
+
+.pull-left[
+```
+---
+title: My First RMarkdown Report
+author: Tom Mock
+output: html_document
+---
+```
+
+```
+---
+title: My First RMarkdown Report
+author: Tom Mock
+output:
+  html_document:
+    toc: true
+    toc_float: true
+    theme: united
+    code_download: true
+---
+```
+
+]
+
+--
+
+.pull-right[
+```
+---
+title: My PDF RMarkdown Report
+author: Tom Mock
+output: pdf_document
+---
+```
+
+]
+
+---
+
+### Specify output options in YAML
+
+.pull-left[
+```
+---
+title: My First RMarkdown Report
+author: Tom Mock
+output: html_document
+---
+```
+
+```
+---
+title: My First RMarkdown Report
+author: Tom Mock
+output:
+  html_document:
+    toc: true
+    toc_float: true
+    theme: united
+    code_download: true
+---
+```
+
+]
+
+.pull-right[
+```
+---
+title: My PDF RMarkdown Report
+author: Tom Mock
+output: pdf_document
+---
+```
+
+```
+---
+title: "My Presentation"
+subtitle: "made with xaringan"
+author: "Yihui Xie"
+date: "2021-10-30"
+output:
+  xaringan
+---
+```
+
+]
+
+---
+
+class: inverse, center, middle
+
+# Text
+
+---
+
+### Text and Markdown text
+
+* _Text_ is **human language**  
+
+* _Markdown_ is **markup language**  
+
+--
+
+```
+* _Text_ is **human language**  
+
+* _Markdown_ is **markup language**
+```
+
+--
+
+You can read all about Markdown via the [Markdown guide](https://www.markdownguide.org/) or use the [`rmarkdown` cheat sheet](https://github.com/rstudio/cheatsheets/blob/master/rmarkdown-2.0.pdf)!
+
+---
+
+### Headings for splitting up your document
+
+.pull-left[
+```
+# Header 1
+
+
+## Header 2
+
+
+### Header 3
+
+
+#### Header 4
+```
+
+]
+
+--
+
+.pull-right[
+
+# Header 1
+## Header 2
+### Header 3
+#### Header 4
+
+]
+
+---
+
+### Headings for splitting up your document
+
+&lt;img src="images/rstudio-headers.png" width="65%" /&gt;
+
+
+---
+
+
+
+.pull-left[
+
+### More than _just_ text
+
+```
+Indeed, parents whose children are  
+vaccinated no longer have to worry about  
+their child's death or disability from:
+
+- whooping cough, 
+- polio, 
+- diphtheria, 
+- hepatitis, or 
+- a host of other infections.
+
+Vaccines are the most cost-effective health  
+care interventions there are. We have   
+three new, extremely effective vaccines to  
+roll out in developing countries:  
+
+1. pneumonia
+1. rotavirus
+1. meningitis A
+```
+
+]
+
+--
+
+.pull-right[
+
+
+Indeed, parents whose children are  
+vaccinated no longer have to worry about  
+their child's death or disability from:  
+
+- whooping cough, 
+- polio, 
+- diphtheria, 
+- hepatitis, or 
+- a host of other infections.
+
+Vaccines are the most cost-effective health  
+care interventions there are. We have   
+three new, extremely effective vaccines to  
+roll out in developing countries:  
+
+1. pneumonia
+1. rotavirus
+1. meningitis A
+
+]
+
+---
+
+### Images
+
+.pull-left[
+
+```
+![RMarkdown hex logo](https://raw.githubusercontent.com/rstudio/rmarkdown/main/man/figures/logo.png)
+![Alt text](path-to-local-file.png)
+```
+
+![RMarkdown hex logo](https://raw.githubusercontent.com/rstudio/rmarkdown/main/man/figures/logo.png)
+
+]
+
+--
+
+.pull-right[
+
+
+```r
+knitr::include_graphics("https://user-images.githubusercontent.com/163582/45438104-ea200600-b67b-11e8-80fa-d9f2a99a03b0.png")
+```
+
+&lt;img src="https://user-images.githubusercontent.com/163582/45438104-ea200600-b67b-11e8-80fa-d9f2a99a03b0.png" width="30%" /&gt;
+
+
+]
+
+---
+
+.pull-left[
+
+### RStudio 1.4 and beyond
+
+RStudio v1.4 (and future versions) include a visual markdown editing mode. Write code, text, and markdown. See the results in real time!
+
+]
+
+.pull-right[
+&lt;img src="https://rstudio.github.io/visual-markdown-editing/images/visual-editing.png" title="A screenshot showing the conversion of markdown into it's formatted output inside the RStudio IDE" alt="A screenshot showing the conversion of markdown into it's formatted output inside the RStudio IDE" width="100%" style="display: block; margin: auto;" /&gt;
+
+
+]
+
+---
+
+### Visual Editor
+
+* The visual editor is more than _just_ the ability to see the output in real time.  
+* It also provides "word processor" like formatting of text, math, and other capabilities!  
+
+
+&lt;img src="https://rstudio.github.io/visual-markdown-editing/images/visual-editing-math.png" title="A screenshot of a RMarkdown document inside the RStudio visual editor. It highlights the text processing abilities and shortcuts." alt="A screenshot of a RMarkdown document inside the RStudio visual editor. It highlights the text processing abilities and shortcuts." width="60%" style="display: block; margin: auto;" /&gt;
+
+---
+
+class: inverse, middle, center
+
+# Code chunks
+
+---
+
+### Code chunks
+
+Specified sections of the document that are used to evaluate code and optionally return outputs.
+
+.pull-left[
+
+````md
+```{r, echo = FALSE}
+mtcars %&gt;% 
+  distinct(cyl)
+```
+
+````
+
+]
+
+--
+
+.pull-right[
+
+
+```r
+mtcars %&gt;% 
+  distinct(cyl)
+```
+
+```
+##                   cyl
+## Mazda RX4           6
+## Datsun 710          4
+## Hornet Sportabout   8
+```
+
+
+]
+
+---
+
+### Anatomy of a code chunk
+
+.pull-left[
+
+````md
+```{r car-stuff, echo = FALSE}
+mtcars %&gt;% 
+  distinct(cyl)
+```
+
+````
+
+]
+
+--
+
+.pull-right[
+- Has 3x backticks on each end ```` ``` ````  
+- Place engine (`r` and chunk label `label`) between curly braces `{r label}`  
+- Place options behind the label, after a comma: `{r label, option1=value}`  
+
+]
+---
+
+### Code chunks
+
+Code in a chunk auto print, unless saved to an object, which needs to be explicitly returned.
+
+
+```r
+n_manufacturers &lt;- n_distinct(gt::gtcars$mfr)
+```
+
+--
+
+
+```r
+n_manufacturers
+```
+
+```
+## [1] 19
+```
+
+
+--
+
+
+```r
+n_manufacturers &lt;- n_distinct(gt::gtcars$mfr)
+n_manufacturers
+```
+
+```
+## [1] 19
+```
+
+---
+
+### Code chunks return more than just data
+
+.pull-left[
+
+```r
+car_data &lt;- gt::gtcars %&gt;% 
+  filter(!is.na(mpg_h)) %&gt;% 
+  group_by(mfr) %&gt;% 
+  summarise(
+    mean_mpg = mean(mpg_h), 
+    n_models = n_distinct(model)
+    ) %&gt;% 
+  filter(n_models &gt;= 2) %&gt;% 
+  arrange(desc(n_models))
+```
+
+
+```r
+ggplot(car_data, aes(x = mean_mpg, 
+      y = fct_reorder(mfr, mean_mpg))) +
+  geom_col()
+```
+
+]
+
+--
+
+.pull-right[
+
+
+```r
+ggplot(car_data, aes(x = mean_mpg, 
+      y = fct_reorder(mfr, mean_mpg))) +
+  geom_col()
+```
+
+![](index_files/figure-html/plotEx-1.png)&lt;!-- --&gt;
+
+]
+
+---
+
+### Code chunks return more than just data
+
+
+```r
+car_data %&gt;% 
+  gt::gt()
+```
+
+<div id="eqqgrrxjsc" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>html {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
+}
+
+#eqqgrrxjsc .gt_table {
+  display: table;
+  border-collapse: collapse;
+  margin-left: auto;
+  margin-right: auto;
+  color: #333333;
+  font-size: 16px;
+  font-weight: normal;
+  font-style: normal;
+  background-color: #FFFFFF;
+  width: auto;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #A8A8A8;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #A8A8A8;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+}
+
+#eqqgrrxjsc .gt_heading {
+  background-color: #FFFFFF;
+  text-align: center;
+  border-bottom-color: #FFFFFF;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#eqqgrrxjsc .gt_title {
+  color: #333333;
+  font-size: 125%;
+  font-weight: initial;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  border-bottom-color: #FFFFFF;
+  border-bottom-width: 0;
+}
+
+#eqqgrrxjsc .gt_subtitle {
+  color: #333333;
+  font-size: 85%;
+  font-weight: initial;
+  padding-top: 0;
+  padding-bottom: 6px;
+  border-top-color: #FFFFFF;
+  border-top-width: 0;
+}
+
+#eqqgrrxjsc .gt_bottom_border {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#eqqgrrxjsc .gt_col_headings {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#eqqgrrxjsc .gt_col_heading {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 6px;
+  padding-left: 5px;
+  padding-right: 5px;
+  overflow-x: hidden;
+}
+
+#eqqgrrxjsc .gt_column_spanner_outer {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  padding-top: 0;
+  padding-bottom: 0;
+  padding-left: 4px;
+  padding-right: 4px;
+}
+
+#eqqgrrxjsc .gt_column_spanner_outer:first-child {
+  padding-left: 0;
+}
+
+#eqqgrrxjsc .gt_column_spanner_outer:last-child {
+  padding-right: 0;
+}
+
+#eqqgrrxjsc .gt_column_spanner {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  overflow-x: hidden;
+  display: inline-block;
+  width: 100%;
+}
+
+#eqqgrrxjsc .gt_group_heading {
+  padding: 8px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+}
+
+#eqqgrrxjsc .gt_empty_group_heading {
+  padding: 0.5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: middle;
+}
+
+#eqqgrrxjsc .gt_from_md > :first-child {
+  margin-top: 0;
+}
+
+#eqqgrrxjsc .gt_from_md > :last-child {
+  margin-bottom: 0;
+}
+
+#eqqgrrxjsc .gt_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  margin: 10px;
+  border-top-style: solid;
+  border-top-width: 1px;
+  border-top-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  overflow-x: hidden;
+}
+
+#eqqgrrxjsc .gt_stub {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 12px;
+}
+
+#eqqgrrxjsc .gt_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#eqqgrrxjsc .gt_first_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+}
+
+#eqqgrrxjsc .gt_grand_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#eqqgrrxjsc .gt_first_grand_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-style: double;
+  border-top-width: 6px;
+  border-top-color: #D3D3D3;
+}
+
+#eqqgrrxjsc .gt_striped {
+  background-color: rgba(128, 128, 128, 0.05);
+}
+
+#eqqgrrxjsc .gt_table_body {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#eqqgrrxjsc .gt_footnotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#eqqgrrxjsc .gt_footnote {
+  margin: 0px;
+  font-size: 90%;
+  padding: 4px;
+}
+
+#eqqgrrxjsc .gt_sourcenotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#eqqgrrxjsc .gt_sourcenote {
+  font-size: 90%;
+  padding: 4px;
+}
+
+#eqqgrrxjsc .gt_left {
+  text-align: left;
+}
+
+#eqqgrrxjsc .gt_center {
+  text-align: center;
+}
+
+#eqqgrrxjsc .gt_right {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+#eqqgrrxjsc .gt_font_normal {
+  font-weight: normal;
+}
+
+#eqqgrrxjsc .gt_font_bold {
+  font-weight: bold;
+}
+
+#eqqgrrxjsc .gt_font_italic {
+  font-style: italic;
+}
+
+#eqqgrrxjsc .gt_super {
+  font-size: 65%;
+}
+
+#eqqgrrxjsc .gt_footnote_marks {
+  font-style: italic;
+  font-weight: normal;
+  font-size: 65%;
+}
+</style>
+<table class="gt_table">
+  
+  <thead class="gt_col_headings">
+    <tr>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1">mfr</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1">mean_mpg</th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_right" rowspan="1" colspan="1">n_models</th>
+    </tr>
+  </thead>
+  <tbody class="gt_table_body">
+    <tr><td class="gt_row gt_left">Ferrari</td>
+<td class="gt_row gt_right">17.88889</td>
+<td class="gt_row gt_right">9</td></tr>
+    <tr><td class="gt_row gt_left">Audi</td>
+<td class="gt_row gt_right">24.80000</td>
+<td class="gt_row gt_right">5</td></tr>
+    <tr><td class="gt_row gt_left">BMW</td>
+<td class="gt_row gt_right">25.40000</td>
+<td class="gt_row gt_right">5</td></tr>
+    <tr><td class="gt_row gt_left">Aston Martin</td>
+<td class="gt_row gt_right">20.50000</td>
+<td class="gt_row gt_right">4</td></tr>
+    <tr><td class="gt_row gt_left">Porsche</td>
+<td class="gt_row gt_right">28.25000</td>
+<td class="gt_row gt_right">4</td></tr>
+    <tr><td class="gt_row gt_left">Lamborghini</td>
+<td class="gt_row gt_right">19.33333</td>
+<td class="gt_row gt_right">3</td></tr>
+    <tr><td class="gt_row gt_left">Maserati</td>
+<td class="gt_row gt_right">22.66667</td>
+<td class="gt_row gt_right">3</td></tr>
+    <tr><td class="gt_row gt_left">Mercedes-Benz</td>
+<td class="gt_row gt_right">24.50000</td>
+<td class="gt_row gt_right">2</td></tr>
+    <tr><td class="gt_row gt_left">Rolls-Royce</td>
+<td class="gt_row gt_right">20.00000</td>
+<td class="gt_row gt_right">2</td></tr>
+  </tbody>
+  
+  
+</table>
+</div>
+
+---
+
+### Code chunks are controllable
+
+There are many chunk options you can control via `knitr` (the package that provides core features of RMarkdown).
+
+Link to all the [`knitr` options](https://yihui.org/knitr/options/#code-chunk)  
+
+--
+
+
+.pull-left[
+
+````md
+```{r, eval = FALSE}
+mtcars %&gt;% 
+  distinct(cyl)
+```
+````
+
+
+]
+
+--
+
+.pull-right[
+
+```r
+# This won't return, because the 
+# chunk is not evaluated
+# via eval = FALSE
+mtcars %&gt;% 
+  distinct(cyl)
+```
+
+
+]
+
+---
+
+### Code chunks are controllable
+
+Some examples
+
+| Option      | Description |
+| ----------- | ----------- |
+| `fig.dim = c(4,6)`      | Plots generated from this chunk will have a width of 4 and height of 6. |
+| `dpi = 150`   | Plots generated will have a dots per inch (pixel density) of 150 |
+| `echo = FALSE` | Code will not be echoed (ie not shown) |
+| `eval = FALSE` | Nothing will be evaluated, but could still be printed |
+| `cache = TRUE` | Results will be cached, and chunk will not be run in subsequent renders, unless code is changed. | 
+| `message = FALSE` | No messages will be printed |
+| `warning = FALSE` | No warnings will be printed | 
+| `include = FALSE` | No ouputs/echo/messages/etc will be returned | 
+
+
+
+---
+
+### Code chunks are controllable
+
+````md
+```{r, fig.dim = c(6,4), dpi=150}
+mtcars %&gt;% 
+  count(cyl) %&gt;% 
+  ggplot(aes(x = n, y = factor(cyl))) + geom_col()
+```
+````
+
+--
+
+New to `knitr` v1.35, there's now support for in-chunk option setting via special chunk option comments (ie `#|`). Very useful for longer options (like `fig.cap` or `fig.alt`), for setting many chunks at once, or for logical statements.
+
+````md
+```{r}
+#| fig.dim = c(6,4), dpi = 150,
+#| fig.alt = "A simple barplot with the count of observations on the x-axis by the number of cylinders on the y-axis. There are 14 eight-cylinder cars, 7 six-cylinder cars, and 11 four-cylinder cars.\n
+```
+````
+
+
+---
+
+### Code chunks are controllable
+
+.pull-left[
+
+Default plot, too big and "fuzzy" 
+
+
+```r
+mtcars %&gt;% 
+  count(cyl) %&gt;% 
+  ggplot(aes(x = n, y = factor(cyl))) + geom_col()
+```
+
+![](index_files/figure-html/unnamed-chunk-19-1.png)&lt;!-- --&gt;
+
+
+]
+
+--
+
+.pull-right[
+
+opts set: `fig.dim = c(6,4)` and `dpi=150`
+
+
+```r
+mtcars %&gt;% 
+  count(cyl) %&gt;% 
+  ggplot(aes(x = n, y = factor(cyl))) + geom_col()
+```
+
+![](index_files/figure-html/unnamed-chunk-20-1.png)&lt;!-- --&gt;
+
+]
+
+---
+
+### Chunk options can be globally set
+
+````md
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(
+  echo = FALSE, fig.width = 6, dpi = 150
+)
+```
+````
+
+--
+
+This is typically most useful in avoiding repeating yourself throughout a document and making the different components consistent between chunks without _having_ to manually set these for **EACH** chunk.
+
+---
+
+### Chunk option defaults
+
+.pull-left[
+
+```r
+str(knitr::opts_chunk$get()[1:27])
+```
+
+```
+## List of 27
+##  $ eval         : logi TRUE
+##  $ echo         : logi TRUE
+##  $ results      : chr "markup"
+##  $ tidy         : logi FALSE
+##  $ tidy.opts    : NULL
+##  $ collapse     : logi FALSE
+##  $ prompt       : logi FALSE
+##  $ comment      : chr "##"
+##  $ highlight    : logi TRUE
+##  $ size         : chr "normalsize"
+##  $ background   : chr "#F7F7F7"
+##  $ strip.white  : 'AsIs' logi TRUE
+##  $ cache        : logi FALSE
+##  $ cache.path   : chr "index_cache/html/"
+##  $ cache.vars   : NULL
+##  $ cache.lazy   : logi TRUE
+##  $ dependson    : NULL
+##  $ autodep      : logi FALSE
+##  $ cache.rebuild: logi FALSE
+##  $ fig.keep     : chr "high"
+##  $ fig.show     : chr "asis"
+##  $ fig.align    : chr "default"
+##  $ fig.path     : chr "index_files/figure-html/"
+##  $ dev          : chr "png"
+##  $ dev.args     : NULL
+##  $ dpi          : num 72
+##  $ fig.ext      : NULL
+```
+
+]
+
+--
+
+.pull-right[
+
+```r
+str(knitr::opts_chunk$get()[28:53])
+```
+
+```
+## List of 26
+##  $ fig.width : num 7
+##  $ fig.height: num 7
+##  $ fig.env   : chr "figure"
+##  $ fig.cap   : NULL
+##  $ fig.scap  : NULL
+##  $ fig.lp    : chr "fig:"
+##  $ fig.subcap: NULL
+##  $ fig.pos   : chr ""
+##  $ out.width : NULL
+##  $ out.height: NULL
+##  $ out.extra : NULL
+##  $ fig.retina: num 1
+##  $ external  : logi TRUE
+##  $ sanitize  : logi FALSE
+##  $ interval  : num 1
+##  $ aniopts   : chr "controls,loop"
+##  $ warning   : logi TRUE
+##  $ error     : logi FALSE
+##  $ message   : logi TRUE
+##  $ render    : NULL
+##  $ ref.label : NULL
+##  $ child     : NULL
+##  $ engine    : chr "R"
+##  $ split     : logi FALSE
+##  $ include   : logi TRUE
+##  $ purl      : logi TRUE
+```
+
+]
+
+
+
+---
+
+### Chunks can be named
+
+.pull-left[
+* Useful for managing your longer documents (RStudio outline)  
+
+&lt;img src="images/chunk-outline.png" title="A screenshot of a RMarkdown document inside RStudio. The screenshot highlights the automatically generated document outline for each chunk name." alt="A screenshot of a RMarkdown document inside RStudio. The screenshot highlights the automatically generated document outline for each chunk name." width="80%" /&gt;
+
+]
+
+--
+
+.pull-right[
+* Useful for troubleshooting (ie _where_ is the document failing on render)  
+
+```
+label: unnamed-chunk-23
+  |..............................|  83%
+  ordinary text without R code
+
+  |..............................|  85%
+label: unnamed-chunk-24 (with options) 
+List of 2
+ $ fig.dim: num [1:2] 6 4
+ $ dpi    : num 150
+
+  |..............................|  86%
+  ordinary text without R code
+```
+
+]
+
+
+---
+
+### Named chunks can be re-used!
+
+.pull-left[
+````md
+
+```{r myPlt, eval = FALSE}
+ggplot(mtcars, aes(x = disp, y = mpg, 
+    color = factor(cyl))) +
+  geom_point()
+```
+
+````
+
+Note that you when using **named chunks** you can't alter the internal code, only the chunk options. This is necessary because you are referencing the initially defined code in that chunk.
+
+]
+
+--
+
+.pull-right[
+````md
+```{r myPlt, dpi=300,fig.dim=c(6,4)}
+```
+````
+
+![](index_files/figure-html/coolPlot-1.png)&lt;!-- --&gt;
+
+
+]
+
+---
+
+&lt;h2 style = 'text-align: center;'&gt;Chunk names, good and bad&lt;/h2&gt;
+
+.pull-left[
+### Good
+
+- `chunk`
+- `myChunk`
+- `my-chunk`
+- `mychunk1`
+
+]
+
+--
+
+.pull-right[
+### Bad
+
+(These _will_ fail)
+
+- `my_chunk`
+- `my chunk`
+
+]
+
+---
+
+### The setup chunk
+
+.pull-left[
+
+````r
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,   
+  comment = "#&gt;", 
+  out.width = "100%" 
+)
+```
+````
+
+]
+
+--
+
+.pull-right[
+- A special chunk label: `setup`  
+- Typically the first chunk  
+- All following chunks will use these options (i.e., sets global chunk options)  
+- Tip: set `include=FALSE`  
+- You can (and should) use individual chunk options too  
+
+]
+
+
+---
+
+### Chunks don't _have_ to be `R`
+
+.pull-left[
+
+````
+```{python}
+x = 42 * 2
+print(x) 
+```
+````
+
+````
+```{bash}
+echo "Hello Bash!"
+cat flights1.csv flights2.csv &gt; flights.csv
+```
+````
+
+]
+
+--
+
+.pull-right[
+
+````
+```{r}
+library(DBI)
+db = dbConnect(RSQLite::SQLite(), 
+  dbname = "sql.sqlite")
+```
+````
+
+````
+```{sql, connection=db}
+SELECT * FROM trials
+```
+````
+
+]
+
+---
+
+### Chunk language engines
+
+
+```r
+names(knitr::knit_engines$get())
+```
+
+```
+##  [1] "awk"       "bash"      "coffee"    "gawk"      "groovy"    "haskell"  
+##  [7] "lein"      "mysql"     "node"      "octave"    "perl"      "psql"     
+## [13] "Rscript"   "ruby"      "sas"       "scala"     "sed"       "sh"       
+## [19] "stata"     "zsh"       "highlight" "Rcpp"      "tikz"      "dot"      
+## [25] "c"         "cc"        "fortran"   "fortran95" "asy"       "cat"      
+## [31] "asis"      "stan"      "block"     "block2"    "js"        "css"      
+## [37] "sql"       "go"        "python"    "julia"     "sass"      "scss"     
+## [43] "R"         "bslib"     "targets"   "comment"
+```
+
+
+---
+
+class: inverse, middle, center
+
+# Using `RMarkdown`
+
+---
+
+### Use an RStudio Project for your analysis!
+
+&gt; One day you will need to quit R, go do something else and return to your analysis the next day. One day you will be working on multiple analyses simultaneously that all use R and you want to keep them separate. One day you will need to bring data from the outside world into R and send numerical results and figures from R back out into the world. To handle these real life situations, you need to make two decisions:  
+&gt; 1: What about your analysis is “real”, i.e. what will you save as your lasting record of what happened?  
+&gt; 2: Where does your analysis “live”?   - [Hadley Wickham, R4DS](https://r4ds.had.co.nz/workflow-projects.html)
+
+--
+
+`RStudio &gt; New Project` - this gives you a lightweight environment for managing your data analysis code, data, and outputs, that can be shared across teams (ie via version control, shared drives, etc)
+
+--
+
+Expanded in great detail in [R4DS](https://r4ds.had.co.nz/workflow-projects.html)
+
+---
+
+### RMarkdown rendering
+
+Rendering a RMarkdown doc is also called "knitting" as you are knitting all the components together.
+
+--
+
+- You can use the RStudio button (Knit)  
+- You can use `rmarkdown::render("file-name.rmd")`
+
+---
+
+### RMarkdown paths
+
+.pull-left[
+RMarkdown starts in it's own directory.
+
+```
+#&gt; tom/demo-project
+#&gt; ├── analysis
+#&gt; │   └── report.Rmd
+#&gt; ├── data
+#&gt; │   └── penguins.csv
+#&gt; ├── demo-project.Rproj
+#&gt; └── prepare
+#&gt;     └── penguins.R
+```
+```
+# inside report.Rmd
+getwd()
+#&gt; [1] "Users/thomasmock/demo-project/analysis"
+```
+
+]
+
+--
+
+.pull-right[
+Use the `here` package to reference files in other directories, as `here` references the project directory by default.
+
+
+```r
+my_csv &lt;- here::here("data", "penguins.csv")
+```
+
+]
+
+--
+
+- [RMarkdown + `here` vignette](https://cran.r-project.org/web/packages/here/vignettes/rmarkdown.html)  
+- [Use `here` with RMarkdown + RStudio Projects](https://malco.io/2018/11/05/why-should-i-use-the-here-package-when-i-m-already-using-projects/)  
+
+
+
+---
+
+### Creating a document
+
+In RStudio:  
+
+- File &gt; New RMarkdown  
+- Cmd + Shift + P &gt; `Create a new R Markdown document`  
+- `rstudioapi::documentNew("---", type = "rmarkdown")`  
+
+--
+
+### DEMO 💻
+
+---
+
+### Insert new chunk
+
+- Click `+C` (Insert new chunk buttom)  
+- Cmd + Shift + P &gt; `Insert a new code chunk`  
+- Command (or Cmd) `⌘` + Option (or Alt) `⌥` + `i` (Mac)  
+- `Ctrl + Alt + i` (Windows/Linux)  
+
+--
+
+### DEMO 💻
+
+---
+
+### Anatomy of a RMarkdown in RStudio
+
+&lt;img src="images/rmd-doc.png" width="40%" /&gt;
+
+---
+
+### Anatomy of a RMarkdown in RStudio
+
+&lt;img src="images/rmd-doc2.png" title="A screenshot of the RMarkdown bar inside RStudio" alt="A screenshot of the RMarkdown bar inside RStudio" width="80%" /&gt;
+
+- Undo-redo buttons  
+- Open in it's own Source window  
+- Save  
+- Automatically Knit/Render on save  
+- Initiate spell checking  
+- Find or Find and Replace  
+
+---
+
+### Anatomy of a RMarkdown in RStudio
+
+.pull-left[
+![A screenshot of the knit menu for RMarkdown inside RStudio](images/rmd-knit.png)
+
+]
+
+--
+
+.pull-right[
+- Knit to specific defaults (HTML, PDF, Word)  
+- Knit with parameters  
+- Knit directory controls  
+- Clear knit cache (ie clear the outputs)  
+
+]
+
+---
+
+### Anatomy of a RMarkdown in RStudio
+
+.pull-left[
+
+&lt;img src="images/rmd-settings.png" title="Screenshot of the RMarkdown settings options in RStudio" alt="Screenshot of the RMarkdown settings options in RStudio" width="80%" /&gt;
+
+]
+
+--
+
+.pull-right[
+
+- Use Visual Editor Mode  
+- Preview plots inline (ie Window) or in the RStudio Plot/Viewer pane  
+- Preview outputs  
+- Chunk output to R console or inline in notebook  
+- Expand output/collapse output  
+- Clear output for that chunk or globally  
+- Output options  
+
+]
+
+
+---
+
+### Anatomy of a RMarkdown in RStudio
+
+.pull-left[
+
+&lt;img src="images/insert-chunk.png" title="Screenshot of the Insert code chunk menu in RStudio" alt="Screenshot of the Insert code chunk menu in RStudio" width="35%" /&gt;
+
+- Insert specific languages (ie R, Bash, D3, Python, Rcpp, SQL, Stan)
+
+]
+
+--
+
+.pull-right[
+&lt;img src="images/rmd-run.png" title="Screenshot of the Run Rmarkdown menu in RStudio" alt="Screenshot of the Run Rmarkdown menu in RStudio" width="60%" /&gt;
+
+- Run highlighted Line(s)  
+- Run Current or Next Chunk  
+- Select whether named `Setup` chunk should be run or automatically run  
+- Run all Chunks 
+
+]
+
+---
+
+### Anatomy of a RMarkdown in RStudio
+
+![Screenshot of the Publish, outline and Visual Editor modes in RStudio](images/rmd-publish.png)
+
+- Publish the document to RStudio Connect or RPubs.com  
+- Open/Close the Document Outline  
+- Toggle the Visual Editor mode  
+
+---
+
+### Take-aways
+
+- ✔️ **Document your document**: use YAML to set up meaningful metadata  
+- ✔️ **Style your document**: use YAML to add options to your chosen output format  
+- ✔️ **Organize your text**: use markdown headers with `#`  
+- ✔️ **Organize your code**: use `knitr` chunk labels  
+- ✔️ **Style your text**: use markdown **bold**, _italics_, `-` bullets, and `1.` lists  
+- ✔️ **Style your output**: use `knitr` chunk options  
+
+
+### 🧶 early, 🧶 often  
+
+
+---
+class: center, middle
+
+# ⏳  
+
+# Time for a break!  
+
+---
+
+class: center, middle, inverse
+
+# Graphics
+
+---
+
+.pull-left[
+
+![`ggplot2` hex logo](https://raw.githubusercontent.com/rstudio/hex-stickers/master/PNG/ggplot2.png)
+
+]
+
+### `ggplot2`
+
+.pull-right[
+
+- [`ggplot2` package](https://ggplot2.tidyverse.org/)  
+- [`ggplot2` cheatsheet](https://github.com/rstudio/cheatsheets/blob/main/data-visualization-2.1.pdf)  
+- [`ggplot2` Book](https://ggplot2-book.org/)  
+- [R4DS Visualization chapter](https://r4ds.had.co.nz/data-visualisation.html)  
+- [Data Visualization - Healy](https://socviz.co/lookatdata.html#lookatdata)  
+- [Fundamentals of Data Visualization - Wilke](https://clauswilke.com/dataviz/)  
+- [Data Visualization Course - Heiss](https://datavizs21.classes.andrewheiss.com/)  
+
+]
+
+---
+
+### Some data
+
+
+```r
+mockdata_all &lt;- read_csv(here::here("data/mockdata.csv")) %&gt;% 
+  mutate_at(vars(starts_with("ae_")), ~as.factor(.)) %&gt;% 
+  mutate(fu_fct = fct_recode(as.factor(fu_stat), 
+                             "Lived" = "1", 
+                             "Died" = "2"))  
+```
+
+```
+## Rows: 1499 Columns: 25
+```
+
+```
+## ── Column specification ────────────────────────────────────────────────────────
+## Delimiter: ","
+## chr (10): arm, sex, race, age_ord, site, country, ethnicity, name, first_nam...
+## dbl (15): case, age, fu_time, fu_stat, ps, hgb, bmi, alk_phos, ast, mdqualit...
+```
+
+```
+## 
+## ℹ Use `spec()` to retrieve the full column specification for this data.
+## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.
+```
+
+```r
+mockdata &lt;- mockdata_all %&gt;% 
+  filter(!site == "Nur-Sultan")
+```
+
+
+---
+
+### Generate plots
+
+.pull-left[
+
+
+
+
+```r
+surv_days_plot &lt;- ggplot(mockdata) +
+  aes(x = fu_time, y=arm, fill = fu_fct, 
+      group = interaction(arm, fu_fct)) +
+  ggridges::geom_density_ridges() +
+  labs(x= "Survival Time in Days (Censored)", 
+       y= "Study Arm") +
+  scale_fill_manual(
+    values = c("lightgrey", "#5C5CFF"),
+    breaks = c("Died", "Lived"),
+    name = "Follow-up status:") +
+  theme_minimal() +
+  theme(legend.position = "top")
+surv_days_plot
+```
+
+
+
+]
+
+--
+
+.pull-right[
+One plot, served many ways
+
+
+```
+## Picking joint bandwidth of 147
+```
+
+![](index_files/figure-html/surv-plot-1.png)&lt;!-- --&gt;
+
+]
+
+---
+
+### Control plots
+
+.pull-left[
+- figure resolution  
+  - "quality" of the plot  
+  - defaults to 72/96 depending on format  
+  - DPI increases can improve the "quality", but also increase file size  
+  
+- figure size  
+  - The height, width  
+  - Controllable in several ways  
+  
+- figure captions and alt text  
+  - Captions are printed captions for the document  
+  - Alt text are embedded, used by screen readers for visually impaired    
+
+
+]
+
+--
+
+.pull-right[
+Also see:  
+- [R4DS Figure Sizing](https://r4ds.had.co.nz/graphics-for-communication.html#figure-sizing)  
+- [Working with images in RMD - Zev Ross](http://zevross.com/blog/2017/06/19/tips-and-tricks-for-working-with-images-and-figures-in-r-markdown-documents/)  
+- [RMarkdown site](https://rmarkdown.rstudio.com/docs/articles/rmarkdown.html)
+
+]
+
+
+
+---
+
+### Figure resolution
+
+.pull-left[
+`{r, dpi = 72, fig.dim = c(5,3)}`
+
+
+```
+## Picking joint bandwidth of 147
+```
+
+![](index_files/figure-html/surv-plot-1.png)&lt;!-- --&gt;
+
+]
+
+--
+
+
+.pull-left[
+`{r, dpi = 300, fig.dim = c(5,3)}`
+
+
+```
+## Picking joint bandwidth of 147
+```
+
+![](index_files/figure-html/surv-plot-1.png)&lt;!-- --&gt;
+
+
+]
+
+---
+
+### Figure resolution
+
+
+.pull-left[
+`{r, dpi = 72, fig.dim = c(5,3)}`
+
+
+```
+## Picking joint bandwidth of 147
+```
+
+![](index_files/figure-html/surv-plot-1.png)&lt;!-- --&gt;
+
+]
+
+--
+
+.pull-right[
+`{r, fig.retina=3, fig.dim = c(5,3)}`
+
+
+```
+## Picking joint bandwidth of 147
+```
+
+&lt;img src="index_files/figure-html/surv-plot-1.png" width="360" /&gt;
+
+]
+
+---
+
+### Figure size
+
+.pull-left[
+`{r, fig.retina=2, fig.dim = c(5,3)}`
+
+
+```
+## Picking joint bandwidth of 147
+```
+
+&lt;img src="index_files/figure-html/surv-plot-1.png" width="360" /&gt;
+
+]
+
+--
+
+.pull-right[
+`{r, fig.retina=2, fig.width=4}`
+
+
+```
+## Picking joint bandwidth of 147
+```
+
+&lt;img src="index_files/figure-html/surv-plot-1.png" width="288" /&gt;
+
+]
+
+---
+
+### Figure size
+
+`{r, fig.retina=2, fig.dim=c(4,6)}`
+
+
+
+```
+## Picking joint bandwidth of 147
+```
+
+&lt;img src="index_files/figure-html/surv-plot-1.png" width="288" /&gt;
+
+
+---
+
+### Figure size
+
+`{r, fig.retina=2, fig.dim=c(8,6)}`
+
+
+```
+## Picking joint bandwidth of 147
+```
+
+&lt;img src="index_files/figure-html/surv-plot-1.png" width="576" /&gt;
+
+---
+
+### Arrange plots
+
+&gt; The goal of [`patchwork`](https://patchwork.data-imaginist.com/) is to make it ridiculously simple to combine separate ggplots.
+
+
+```r
+library(patchwork)
+p1 &lt;- ggplot(mtcars) + geom_point(aes(mpg, disp))
+p2 &lt;- ggplot(mtcars) + geom_boxplot(aes(gear, disp, group = gear))
+p1 + p2
+```
+
+![](index_files/figure-html/unnamed-chunk-32-1.png)&lt;!-- --&gt;
+
+
+---
+
+### One plot, two plot
+
+.pull-left[
+
+```r
+age_histogram &lt;- 
+  ggplot(mockdata, aes(age)) +
+  geom_histogram(color = 'white',
+                 fill = "#5C5CFF", bins = 20) +
+  labs(x = "Age", y = "Count") +
+  scale_y_continuous(
+    breaks = scales::pretty_breaks()) + 
+  theme_minimal() +
+  geom_hline(yintercept = 0)
+```
+
+]
+
+--
+
+.pull-right[
+
+```r
+age_histogram
+```
+
+![](index_files/figure-html/unnamed-chunk-34-1.png)&lt;!-- --&gt;
+
+]
+
+---
+
+### One plot, two plot
+
+
+```r
+# using fig.dim=c(8,4), fig.retina=2
+surv_days_plot + age_histogram
+```
+
+```
+## Picking joint bandwidth of 147
+```
+
+&lt;img src="index_files/figure-html/unnamed-chunk-35-1.png" width="576" /&gt;
+
+---
+
+### Labeled subplots
+
+
+```r
+# using fig.dim=c(8,4), fig.retina=1
+surv_days_plot + age_histogram + plot_annotation(tag_levels = "A")
+```
+
+```
+## Picking joint bandwidth of 147
+```
+
+![](index_files/figure-html/unnamed-chunk-36-1.png)&lt;!-- --&gt;
+
+---
+
+### Labeled subplots
+
+
+```r
+# using fig.dim=c(8,4), fig.retina=1
+surv_days_plot + age_histogram + plot_annotation(tag_levels = "1")
+```
+
+```
+## Picking joint bandwidth of 147
+```
+
+![](index_files/figure-html/unnamed-chunk-37-1.png)&lt;!-- --&gt;
+
+
+---
+
+### Saving plots
+
+`fig.path`
+
+---
+
+## A global `setup` chunk
+
+````
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(
+  warning = FALSE,
+  message = FALSE,
+  echo = FALSE,
+  fig.retina = 3,
+  fig.path = here::here("tom-figs/")
+)
+```
+````
+
+---
+
+class: center, middle, inverse
+
+# Tables
+
+---
+
+### Tables
+
+Given the duration of this workshop, a deep dive on tables is out of scope. In short, depending on the output (HTML, PDF, Office) you'll likely lean on specific packages. You can always output tables as an image (ie `.png`) and embed like you would a plot, but note that you lose the accessible benefit of a table in that case. 
+
+--
+
+Great R packages for tables:  
+
+- [`gt`](https://gt.rstudio.com/): Aiming to be a `grammar of tables`, as `ggplot2` is an implemementation of the `grammar of graphics`.  
+- [`gtsummary`](https://www.danieldsjoberg.com/gtsummary/index.html): a great package for quickly summarizing data or common statistical outputs.  
+- [`flextable`](https://ardata-fr.github.io/flextable-book/): flexible package for output, especially powerful in that it can output tables to Word/Powerpoint.
+- [`gtExtras`](https://jthomasmock.github.io/gtExtras/): my own package, primarily for embedding many data visualizations into `gt` tables.  
+- [`kableExtra`](https://github.com/haozhu233/kableExtra): very stable and easy to use package for quickly creating tables in HTML/LaTeX (ie PDF).  
+- [`bstfun`](http://www.danieldsjoberg.com/bstfun/index.html): A miscellaneous collection of functions to used by members of the Biostatistics Department at MSKCC  
+
+---
+
+### `gtsummary`
+
+I am a huge fan of `gtsummary` and `gt`. `gtsummary` is especially powerful as it combines common tasks with rich support for outputs (Word, PDF, HTML). It is a wrapper around several packages with many additional capabilities built in.
+
+--
+
+
+```r
+library(gtsummary)
+library(tidyverse)
+library(survival)
+```
+
+---
+
+### Examples
+
+.pull-left[
+
+
+```r
+select(trial, trt, age, grade, response) %&gt;%
+  tbl_summary(by = trt)  
+```
+
+]
+
+--
+
+.pull-right[
+
+<div id="hnuioiocsi" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>html {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
+}
+
+#hnuioiocsi .gt_table {
+  display: table;
+  border-collapse: collapse;
+  margin-left: auto;
+  margin-right: auto;
+  color: #333333;
+  font-size: 16px;
+  font-weight: normal;
+  font-style: normal;
+  background-color: #FFFFFF;
+  width: auto;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #A8A8A8;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #A8A8A8;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+}
+
+#hnuioiocsi .gt_heading {
+  background-color: #FFFFFF;
+  text-align: center;
+  border-bottom-color: #FFFFFF;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#hnuioiocsi .gt_title {
+  color: #333333;
+  font-size: 125%;
+  font-weight: initial;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  border-bottom-color: #FFFFFF;
+  border-bottom-width: 0;
+}
+
+#hnuioiocsi .gt_subtitle {
+  color: #333333;
+  font-size: 85%;
+  font-weight: initial;
+  padding-top: 0;
+  padding-bottom: 6px;
+  border-top-color: #FFFFFF;
+  border-top-width: 0;
+}
+
+#hnuioiocsi .gt_bottom_border {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#hnuioiocsi .gt_col_headings {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#hnuioiocsi .gt_col_heading {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 6px;
+  padding-left: 5px;
+  padding-right: 5px;
+  overflow-x: hidden;
+}
+
+#hnuioiocsi .gt_column_spanner_outer {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  padding-top: 0;
+  padding-bottom: 0;
+  padding-left: 4px;
+  padding-right: 4px;
+}
+
+#hnuioiocsi .gt_column_spanner_outer:first-child {
+  padding-left: 0;
+}
+
+#hnuioiocsi .gt_column_spanner_outer:last-child {
+  padding-right: 0;
+}
+
+#hnuioiocsi .gt_column_spanner {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  overflow-x: hidden;
+  display: inline-block;
+  width: 100%;
+}
+
+#hnuioiocsi .gt_group_heading {
+  padding: 8px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+}
+
+#hnuioiocsi .gt_empty_group_heading {
+  padding: 0.5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: middle;
+}
+
+#hnuioiocsi .gt_from_md > :first-child {
+  margin-top: 0;
+}
+
+#hnuioiocsi .gt_from_md > :last-child {
+  margin-bottom: 0;
+}
+
+#hnuioiocsi .gt_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  margin: 10px;
+  border-top-style: solid;
+  border-top-width: 1px;
+  border-top-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  overflow-x: hidden;
+}
+
+#hnuioiocsi .gt_stub {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 12px;
+}
+
+#hnuioiocsi .gt_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#hnuioiocsi .gt_first_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+}
+
+#hnuioiocsi .gt_grand_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#hnuioiocsi .gt_first_grand_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-style: double;
+  border-top-width: 6px;
+  border-top-color: #D3D3D3;
+}
+
+#hnuioiocsi .gt_striped {
+  background-color: rgba(128, 128, 128, 0.05);
+}
+
+#hnuioiocsi .gt_table_body {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#hnuioiocsi .gt_footnotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#hnuioiocsi .gt_footnote {
+  margin: 0px;
+  font-size: 90%;
+  padding: 4px;
+}
+
+#hnuioiocsi .gt_sourcenotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#hnuioiocsi .gt_sourcenote {
+  font-size: 90%;
+  padding: 4px;
+}
+
+#hnuioiocsi .gt_left {
+  text-align: left;
+}
+
+#hnuioiocsi .gt_center {
+  text-align: center;
+}
+
+#hnuioiocsi .gt_right {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+#hnuioiocsi .gt_font_normal {
+  font-weight: normal;
+}
+
+#hnuioiocsi .gt_font_bold {
+  font-weight: bold;
+}
+
+#hnuioiocsi .gt_font_italic {
+  font-style: italic;
+}
+
+#hnuioiocsi .gt_super {
+  font-size: 65%;
+}
+
+#hnuioiocsi .gt_footnote_marks {
+  font-style: italic;
+  font-weight: normal;
+  font-size: 65%;
+}
+</style>
+<table class="gt_table">
+  
+  <thead class="gt_col_headings">
+    <tr>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1"><strong>Characteristic</strong></th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1"><strong>Drug A</strong>, N = 98<sup class="gt_footnote_marks">1</sup></th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1"><strong>Drug B</strong>, N = 102<sup class="gt_footnote_marks">1</sup></th>
+    </tr>
+  </thead>
+  <tbody class="gt_table_body">
+    <tr><td class="gt_row gt_left">Age</td>
+<td class="gt_row gt_center">46 (37, 59)</td>
+<td class="gt_row gt_center">48 (39, 56)</td></tr>
+    <tr><td class="gt_row gt_left" style="text-align: left; text-indent: 10px;">Unknown</td>
+<td class="gt_row gt_center">7</td>
+<td class="gt_row gt_center">4</td></tr>
+    <tr><td class="gt_row gt_left">Grade</td>
+<td class="gt_row gt_center"></td>
+<td class="gt_row gt_center"></td></tr>
+    <tr><td class="gt_row gt_left" style="text-align: left; text-indent: 10px;">I</td>
+<td class="gt_row gt_center">35 (36%)</td>
+<td class="gt_row gt_center">33 (32%)</td></tr>
+    <tr><td class="gt_row gt_left" style="text-align: left; text-indent: 10px;">II</td>
+<td class="gt_row gt_center">32 (33%)</td>
+<td class="gt_row gt_center">36 (35%)</td></tr>
+    <tr><td class="gt_row gt_left" style="text-align: left; text-indent: 10px;">III</td>
+<td class="gt_row gt_center">31 (32%)</td>
+<td class="gt_row gt_center">33 (32%)</td></tr>
+    <tr><td class="gt_row gt_left">Tumor Response</td>
+<td class="gt_row gt_center">28 (29%)</td>
+<td class="gt_row gt_center">33 (34%)</td></tr>
+    <tr><td class="gt_row gt_left" style="text-align: left; text-indent: 10px;">Unknown</td>
+<td class="gt_row gt_center">3</td>
+<td class="gt_row gt_center">4</td></tr>
+  </tbody>
+  
+  <tfoot>
+    <tr class="gt_footnotes">
+      <td colspan="3">
+        <p class="gt_footnote">
+          <sup class="gt_footnote_marks">
+            <em>1</em>
+          </sup>
+           
+          Median (IQR); n (%)
+          <br />
+        </p>
+      </td>
+    </tr>
+  </tfoot>
+</table>
+</div>
+
+]
+
+---
+
+### `bstfun` adds some fun!
+
+My own package `gtExtras` can be used natively with `gt`, and Daniel has wrapped it to be supported in `gtsummary`!
+
+
+```r
+library(gtsummary)
+select(trial, age, marker) %&gt;%
+  tbl_summary(missing = "no") %&gt;%
+  bstfun::add_sparkline() # brought in from gtExtras
+```
+
+<div id="vdxynrceic" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>html {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
+}
+
+#vdxynrceic .gt_table {
+  display: table;
+  border-collapse: collapse;
+  margin-left: auto;
+  margin-right: auto;
+  color: #333333;
+  font-size: 16px;
+  font-weight: normal;
+  font-style: normal;
+  background-color: #FFFFFF;
+  width: auto;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #A8A8A8;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #A8A8A8;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+}
+
+#vdxynrceic .gt_heading {
+  background-color: #FFFFFF;
+  text-align: center;
+  border-bottom-color: #FFFFFF;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#vdxynrceic .gt_title {
+  color: #333333;
+  font-size: 125%;
+  font-weight: initial;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  border-bottom-color: #FFFFFF;
+  border-bottom-width: 0;
+}
+
+#vdxynrceic .gt_subtitle {
+  color: #333333;
+  font-size: 85%;
+  font-weight: initial;
+  padding-top: 0;
+  padding-bottom: 6px;
+  border-top-color: #FFFFFF;
+  border-top-width: 0;
+}
+
+#vdxynrceic .gt_bottom_border {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#vdxynrceic .gt_col_headings {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#vdxynrceic .gt_col_heading {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 6px;
+  padding-left: 5px;
+  padding-right: 5px;
+  overflow-x: hidden;
+}
+
+#vdxynrceic .gt_column_spanner_outer {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  padding-top: 0;
+  padding-bottom: 0;
+  padding-left: 4px;
+  padding-right: 4px;
+}
+
+#vdxynrceic .gt_column_spanner_outer:first-child {
+  padding-left: 0;
+}
+
+#vdxynrceic .gt_column_spanner_outer:last-child {
+  padding-right: 0;
+}
+
+#vdxynrceic .gt_column_spanner {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  overflow-x: hidden;
+  display: inline-block;
+  width: 100%;
+}
+
+#vdxynrceic .gt_group_heading {
+  padding: 8px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+}
+
+#vdxynrceic .gt_empty_group_heading {
+  padding: 0.5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: middle;
+}
+
+#vdxynrceic .gt_from_md > :first-child {
+  margin-top: 0;
+}
+
+#vdxynrceic .gt_from_md > :last-child {
+  margin-bottom: 0;
+}
+
+#vdxynrceic .gt_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  margin: 10px;
+  border-top-style: solid;
+  border-top-width: 1px;
+  border-top-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  overflow-x: hidden;
+}
+
+#vdxynrceic .gt_stub {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 12px;
+}
+
+#vdxynrceic .gt_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#vdxynrceic .gt_first_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+}
+
+#vdxynrceic .gt_grand_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#vdxynrceic .gt_first_grand_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-style: double;
+  border-top-width: 6px;
+  border-top-color: #D3D3D3;
+}
+
+#vdxynrceic .gt_striped {
+  background-color: rgba(128, 128, 128, 0.05);
+}
+
+#vdxynrceic .gt_table_body {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#vdxynrceic .gt_footnotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#vdxynrceic .gt_footnote {
+  margin: 0px;
+  font-size: 90%;
+  padding: 4px;
+}
+
+#vdxynrceic .gt_sourcenotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#vdxynrceic .gt_sourcenote {
+  font-size: 90%;
+  padding: 4px;
+}
+
+#vdxynrceic .gt_left {
+  text-align: left;
+}
+
+#vdxynrceic .gt_center {
+  text-align: center;
+}
+
+#vdxynrceic .gt_right {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+#vdxynrceic .gt_font_normal {
+  font-weight: normal;
+}
+
+#vdxynrceic .gt_font_bold {
+  font-weight: bold;
+}
+
+#vdxynrceic .gt_font_italic {
+  font-style: italic;
+}
+
+#vdxynrceic .gt_super {
+  font-size: 65%;
+}
+
+#vdxynrceic .gt_footnote_marks {
+  font-style: italic;
+  font-weight: normal;
+  font-size: 65%;
+}
+</style>
+<table class="gt_table">
+  
+  <thead class="gt_col_headings">
+    <tr>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1"><strong>Characteristic</strong></th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1"><strong>N = 200</strong><sup class="gt_footnote_marks">1</sup></th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1"><strong>Histogram</strong></th>
+    </tr>
+  </thead>
+  <tbody class="gt_table_body">
+    <tr><td class="gt_row gt_left">Age</td>
+<td class="gt_row gt_center">47 (38, 57)</td>
+<td class="gt_row gt_center"><?xml version='1.0' encoding='UTF-8' ?><svg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' class='svglite' width='85.04pt' height='14.17pt' viewBox='0 0 85.04 14.17'><defs>  <style type='text/css'><![CDATA[    .svglite line, .svglite polyline, .svglite polygon, .svglite path, .svglite rect, .svglite circle {      fill: none;      stroke: #000000;      stroke-linecap: round;      stroke-linejoin: round;      stroke-miterlimit: 10.00;    }  ]]></style></defs><rect width='100%' height='100%' style='stroke: none; fill: none;'/><defs>  <clipPath id='cpMC4wMHw4NS4wNHwwLjAwfDE0LjE3'>    <rect x='0.00' y='0.00' width='85.04' height='14.17' />  </clipPath></defs><g clip-path='url(#cpMC4wMHw4NS4wNHwwLjAwfDE0LjE3)'><rect x='2.76' y='12.79' width='6.39' height='0.74' style='stroke-width: 1.07; stroke-linecap: square; stroke-linejoin: miter; fill: #BEBEBE;' /><rect x='9.15' y='13.16' width='6.39' height='0.37' style='stroke-width: 1.07; stroke-linecap: square; stroke-linejoin: miter; fill: #BEBEBE;' /><rect x='15.54' y='10.95' width='6.39' height='2.58' style='stroke-width: 1.07; stroke-linecap: square; stroke-linejoin: miter; fill: #BEBEBE;' /><rect x='21.93' y='10.95' width='6.39' height='2.58' style='stroke-width: 1.07; stroke-linecap: square; stroke-linejoin: miter; fill: #BEBEBE;' /><rect x='28.33' y='4.33' width='6.39' height='9.20' style='stroke-width: 1.07; stroke-linecap: square; stroke-linejoin: miter; fill: #BEBEBE;' /><rect x='34.72' y='1.75' width='6.39' height='11.78' style='stroke-width: 1.07; stroke-linecap: square; stroke-linejoin: miter; fill: #BEBEBE;' /><rect x='41.11' y='0.64' width='6.39' height='12.88' style='stroke-width: 1.07; stroke-linecap: square; stroke-linejoin: miter; fill: #BEBEBE;' /><rect x='47.50' y='2.48' width='6.39' height='11.04' style='stroke-width: 1.07; stroke-linecap: square; stroke-linejoin: miter; fill: #BEBEBE;' /><rect x='53.90' y='6.53' width='6.39' height='6.99' style='stroke-width: 1.07; stroke-linecap: square; stroke-linejoin: miter; fill: #BEBEBE;' /><rect x='60.29' y='5.80' width='6.39' height='7.73' style='stroke-width: 1.07; stroke-linecap: square; stroke-linejoin: miter; fill: #BEBEBE;' /><rect x='66.68' y='10.58' width='6.39' height='2.95' style='stroke-width: 1.07; stroke-linecap: square; stroke-linejoin: miter; fill: #BEBEBE;' /><rect x='73.07' y='13.16' width='6.39' height='0.37' style='stroke-width: 1.07; stroke-linecap: square; stroke-linejoin: miter; fill: #BEBEBE;' /><rect x='79.47' y='13.16' width='6.39' height='0.37' style='stroke-width: 1.07; stroke-linecap: square; stroke-linejoin: miter; fill: #BEBEBE;' /></g></svg></td></tr>
+    <tr><td class="gt_row gt_left">Marker Level (ng/mL)</td>
+<td class="gt_row gt_center">0.64 (0.22, 1.39)</td>
+<td class="gt_row gt_center"><?xml version='1.0' encoding='UTF-8' ?><svg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' class='svglite' width='85.04pt' height='14.17pt' viewBox='0 0 85.04 14.17'><defs>  <style type='text/css'><![CDATA[    .svglite line, .svglite polyline, .svglite polygon, .svglite path, .svglite rect, .svglite circle {      fill: none;      stroke: #000000;      stroke-linecap: round;      stroke-linejoin: round;      stroke-miterlimit: 10.00;    }  ]]></style></defs><rect width='100%' height='100%' style='stroke: none; fill: none;'/><defs>  <clipPath id='cpMC4wMHw4NS4wNHwwLjAwfDE0LjE3'>    <rect x='0.00' y='0.00' width='85.04' height='14.17' />  </clipPath></defs><g clip-path='url(#cpMC4wMHw4NS4wNHwwLjAwfDE0LjE3)'><rect x='1.36' y='2.19' width='7.87' height='11.34' style='stroke-width: 1.07; stroke-linecap: square; stroke-linejoin: miter; fill: #BEBEBE;' /><rect x='9.23' y='0.64' width='7.87' height='12.88' style='stroke-width: 1.07; stroke-linecap: square; stroke-linejoin: miter; fill: #BEBEBE;' /><rect x='17.10' y='7.60' width='7.87' height='5.93' style='stroke-width: 1.07; stroke-linecap: square; stroke-linejoin: miter; fill: #BEBEBE;' /><rect x='24.97' y='6.57' width='7.87' height='6.96' style='stroke-width: 1.07; stroke-linecap: square; stroke-linejoin: miter; fill: #BEBEBE;' /><rect x='32.84' y='9.92' width='7.87' height='3.61' style='stroke-width: 1.07; stroke-linecap: square; stroke-linejoin: miter; fill: #BEBEBE;' /><rect x='40.71' y='9.15' width='7.87' height='4.38' style='stroke-width: 1.07; stroke-linecap: square; stroke-linejoin: miter; fill: #BEBEBE;' /><rect x='48.58' y='11.98' width='7.87' height='1.55' style='stroke-width: 1.07; stroke-linecap: square; stroke-linejoin: miter; fill: #BEBEBE;' /><rect x='56.45' y='12.24' width='7.87' height='1.29' style='stroke-width: 1.07; stroke-linecap: square; stroke-linejoin: miter; fill: #BEBEBE;' /><rect x='64.32' y='13.27' width='7.87' height='0.26' style='stroke-width: 1.07; stroke-linecap: square; stroke-linejoin: miter; fill: #BEBEBE;' /><rect x='72.19' y='12.76' width='7.87' height='0.77' style='stroke-width: 1.07; stroke-linecap: square; stroke-linejoin: miter; fill: #BEBEBE;' /></g></svg></td></tr>
+  </tbody>
+  
+  <tfoot>
+    <tr class="gt_footnotes">
+      <td colspan="3">
+        <p class="gt_footnote">
+          <sup class="gt_footnote_marks">
+            <em>1</em>
+          </sup>
+           
+          Median (IQR)
+          <br />
+        </p>
+      </td>
+    </tr>
+  </tfoot>
+</table>
+</div>
+
+---
+
+
+### Examples
+
+.pull-left[
+
+
+```r
+t1 &lt;-
+  glm(response ~ trt + grade + age, trial, family = binomial) %&gt;%
+  tbl_regression(exponentiate = TRUE)
+# time to death Cox model
+t2 &lt;-
+  coxph(Surv(ttdeath, death) ~ trt + grade + age, trial) %&gt;%
+  tbl_regression(exponentiate = TRUE)
+
+# printing merged table
+combo_tab &lt;- tbl_merge(
+  tbls = list(t1, t2),
+  tab_spanner = c("**Tumor Response**", "**Time to Death**")
+)
+```
+
+
+]
+
+-
+
+.pull-right[
+
+<div id="rvezaqvhvy" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>html {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
+}
+
+#rvezaqvhvy .gt_table {
+  display: table;
+  border-collapse: collapse;
+  margin-left: auto;
+  margin-right: auto;
+  color: #333333;
+  font-size: 16px;
+  font-weight: normal;
+  font-style: normal;
+  background-color: #FFFFFF;
+  width: auto;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #A8A8A8;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #A8A8A8;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+}
+
+#rvezaqvhvy .gt_heading {
+  background-color: #FFFFFF;
+  text-align: center;
+  border-bottom-color: #FFFFFF;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#rvezaqvhvy .gt_title {
+  color: #333333;
+  font-size: 125%;
+  font-weight: initial;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  border-bottom-color: #FFFFFF;
+  border-bottom-width: 0;
+}
+
+#rvezaqvhvy .gt_subtitle {
+  color: #333333;
+  font-size: 85%;
+  font-weight: initial;
+  padding-top: 0;
+  padding-bottom: 6px;
+  border-top-color: #FFFFFF;
+  border-top-width: 0;
+}
+
+#rvezaqvhvy .gt_bottom_border {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#rvezaqvhvy .gt_col_headings {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#rvezaqvhvy .gt_col_heading {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 6px;
+  padding-left: 5px;
+  padding-right: 5px;
+  overflow-x: hidden;
+}
+
+#rvezaqvhvy .gt_column_spanner_outer {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  padding-top: 0;
+  padding-bottom: 0;
+  padding-left: 4px;
+  padding-right: 4px;
+}
+
+#rvezaqvhvy .gt_column_spanner_outer:first-child {
+  padding-left: 0;
+}
+
+#rvezaqvhvy .gt_column_spanner_outer:last-child {
+  padding-right: 0;
+}
+
+#rvezaqvhvy .gt_column_spanner {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  overflow-x: hidden;
+  display: inline-block;
+  width: 100%;
+}
+
+#rvezaqvhvy .gt_group_heading {
+  padding: 8px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+}
+
+#rvezaqvhvy .gt_empty_group_heading {
+  padding: 0.5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: middle;
+}
+
+#rvezaqvhvy .gt_from_md > :first-child {
+  margin-top: 0;
+}
+
+#rvezaqvhvy .gt_from_md > :last-child {
+  margin-bottom: 0;
+}
+
+#rvezaqvhvy .gt_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  margin: 10px;
+  border-top-style: solid;
+  border-top-width: 1px;
+  border-top-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  overflow-x: hidden;
+}
+
+#rvezaqvhvy .gt_stub {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 12px;
+}
+
+#rvezaqvhvy .gt_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#rvezaqvhvy .gt_first_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+}
+
+#rvezaqvhvy .gt_grand_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#rvezaqvhvy .gt_first_grand_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-style: double;
+  border-top-width: 6px;
+  border-top-color: #D3D3D3;
+}
+
+#rvezaqvhvy .gt_striped {
+  background-color: rgba(128, 128, 128, 0.05);
+}
+
+#rvezaqvhvy .gt_table_body {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#rvezaqvhvy .gt_footnotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#rvezaqvhvy .gt_footnote {
+  margin: 0px;
+  font-size: 90%;
+  padding: 4px;
+}
+
+#rvezaqvhvy .gt_sourcenotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#rvezaqvhvy .gt_sourcenote {
+  font-size: 90%;
+  padding: 4px;
+}
+
+#rvezaqvhvy .gt_left {
+  text-align: left;
+}
+
+#rvezaqvhvy .gt_center {
+  text-align: center;
+}
+
+#rvezaqvhvy .gt_right {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+#rvezaqvhvy .gt_font_normal {
+  font-weight: normal;
+}
+
+#rvezaqvhvy .gt_font_bold {
+  font-weight: bold;
+}
+
+#rvezaqvhvy .gt_font_italic {
+  font-style: italic;
+}
+
+#rvezaqvhvy .gt_super {
+  font-size: 65%;
+}
+
+#rvezaqvhvy .gt_footnote_marks {
+  font-style: italic;
+  font-weight: normal;
+  font-size: 65%;
+}
+</style>
+<table class="gt_table">
+  
+  <thead class="gt_col_headings">
+    <tr>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="2" colspan="1"><strong>Characteristic</strong></th>
+      <th class="gt_center gt_columns_top_border gt_column_spanner_outer" rowspan="1" colspan="3">
+        <span class="gt_column_spanner"><strong>Tumor Response</strong></span>
+      </th>
+      <th class="gt_center gt_columns_top_border gt_column_spanner_outer" rowspan="1" colspan="3">
+        <span class="gt_column_spanner"><strong>Time to Death</strong></span>
+      </th>
+    </tr>
+    <tr>
+      <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1"><strong>OR</strong><sup class="gt_footnote_marks">1</sup></th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1"><strong>95% CI</strong><sup class="gt_footnote_marks">1</sup></th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1"><strong>p-value</strong></th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1"><strong>HR</strong><sup class="gt_footnote_marks">1</sup></th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1"><strong>95% CI</strong><sup class="gt_footnote_marks">1</sup></th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_center" rowspan="1" colspan="1"><strong>p-value</strong></th>
+    </tr>
+  </thead>
+  <tbody class="gt_table_body">
+    <tr><td class="gt_row gt_left">Chemotherapy Treatment</td>
+<td class="gt_row gt_center"></td>
+<td class="gt_row gt_center"></td>
+<td class="gt_row gt_center"></td>
+<td class="gt_row gt_center"></td>
+<td class="gt_row gt_center"></td>
+<td class="gt_row gt_center"></td></tr>
+    <tr><td class="gt_row gt_left" style="text-align: left; text-indent: 10px;">Drug A</td>
+<td class="gt_row gt_center">—</td>
+<td class="gt_row gt_center">—</td>
+<td class="gt_row gt_center"></td>
+<td class="gt_row gt_center">—</td>
+<td class="gt_row gt_center">—</td>
+<td class="gt_row gt_center"></td></tr>
+    <tr><td class="gt_row gt_left" style="text-align: left; text-indent: 10px;">Drug B</td>
+<td class="gt_row gt_center">1.13</td>
+<td class="gt_row gt_center">0.60, 2.13</td>
+<td class="gt_row gt_center">0.7</td>
+<td class="gt_row gt_center">1.30</td>
+<td class="gt_row gt_center">0.88, 1.92</td>
+<td class="gt_row gt_center">0.2</td></tr>
+    <tr><td class="gt_row gt_left">Grade</td>
+<td class="gt_row gt_center"></td>
+<td class="gt_row gt_center"></td>
+<td class="gt_row gt_center"></td>
+<td class="gt_row gt_center"></td>
+<td class="gt_row gt_center"></td>
+<td class="gt_row gt_center"></td></tr>
+    <tr><td class="gt_row gt_left" style="text-align: left; text-indent: 10px;">I</td>
+<td class="gt_row gt_center">—</td>
+<td class="gt_row gt_center">—</td>
+<td class="gt_row gt_center"></td>
+<td class="gt_row gt_center">—</td>
+<td class="gt_row gt_center">—</td>
+<td class="gt_row gt_center"></td></tr>
+    <tr><td class="gt_row gt_left" style="text-align: left; text-indent: 10px;">II</td>
+<td class="gt_row gt_center">0.85</td>
+<td class="gt_row gt_center">0.39, 1.85</td>
+<td class="gt_row gt_center">0.7</td>
+<td class="gt_row gt_center">1.21</td>
+<td class="gt_row gt_center">0.73, 1.99</td>
+<td class="gt_row gt_center">0.5</td></tr>
+    <tr><td class="gt_row gt_left" style="text-align: left; text-indent: 10px;">III</td>
+<td class="gt_row gt_center">1.01</td>
+<td class="gt_row gt_center">0.47, 2.15</td>
+<td class="gt_row gt_center">>0.9</td>
+<td class="gt_row gt_center">1.79</td>
+<td class="gt_row gt_center">1.12, 2.86</td>
+<td class="gt_row gt_center">0.014</td></tr>
+    <tr><td class="gt_row gt_left">Age</td>
+<td class="gt_row gt_center">1.02</td>
+<td class="gt_row gt_center">1.00, 1.04</td>
+<td class="gt_row gt_center">0.10</td>
+<td class="gt_row gt_center">1.01</td>
+<td class="gt_row gt_center">0.99, 1.02</td>
+<td class="gt_row gt_center">0.3</td></tr>
+  </tbody>
+  
+  <tfoot>
+    <tr class="gt_footnotes">
+      <td colspan="7">
+        <p class="gt_footnote">
+          <sup class="gt_footnote_marks">
+            <em>1</em>
+          </sup>
+           
+          OR = Odds Ratio, CI = Confidence Interval, HR = Hazard Ratio
+          <br />
+        </p>
+      </td>
+    </tr>
+  </tfoot>
+</table>
+</div>
+
+
+]-
+
+---
+
+### Table best practices
+
+[10 Guidelines for Better Tables in R](https://themockup.blog/posts/2020-09-04-10-table-rules-in-r/)
+
+&lt;blockquote class="twitter-tweet"&gt;&lt;p lang="en" dir="ltr"&gt;I recently published &amp;quot;Ten Guidelines for Better Tables&amp;quot; in the Journal of Benefit Cost Analysis (&lt;a href="https://twitter.com/benefitcost?ref_src=twsrc%5Etfw"&gt;@benefitcost&lt;/a&gt;) on ways to improve your data tables. &lt;br&gt;&lt;br&gt;Here&amp;#39;s a thread summarizing the 10 guidelines. &lt;br&gt;&lt;br&gt;Full paper is here: &lt;a href="https://t.co/VSGYnfg7iP"&gt;https://t.co/VSGYnfg7iP&lt;/a&gt; &lt;a href="https://t.co/W6qbsktioL"&gt;pic.twitter.com/W6qbsktioL&lt;/a&gt;&lt;/p&gt;&amp;mdash; Jon Schwabish (@jschwabish) &lt;a href="https://twitter.com/jschwabish/status/1290323581881266177?ref_src=twsrc%5Etfw"&gt;August 3, 2020&lt;/a&gt;&lt;/blockquote&gt; &lt;script async src="https://platform.twitter.com/widgets.js" charset="utf-8"&gt;&lt;/script&gt;
+
+---
+
+class: center, middle, inverse
+
+# Formats
+
+---
+
+### Many [RMarkdown Formats](https://rmarkdown.rstudio.com/formats.html)
+
+
+.pull-left[
+<div id="gzbpnyetta" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>@import url("https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Fira+Mono:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Source+Sans+Pro:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Libre+Franklin:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Source+Sans+Pro:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
+html {
+  font-family: 'Open Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
+}
+
+#gzbpnyetta .gt_table {
+  display: table;
+  border-collapse: collapse;
+  margin-left: auto;
+  margin-right: auto;
+  color: #333333;
+  font-size: 16px;
+  font-weight: normal;
+  font-style: none;
+  background-color: #FFFFFF;
+  width: auto;
+  border-top-style: none;
+  border-top-width: 2px;
+  border-top-color: #A8A8A8;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #A8A8A8;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+}
+
+#gzbpnyetta .gt_heading {
+  background-color: #FFFFFF;
+  text-align: left;
+  border-bottom-color: #FFFFFF;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#gzbpnyetta .gt_title {
+  color: #333333;
+  font-size: 125%;
+  font-weight: initial;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  border-bottom-color: #FFFFFF;
+  border-bottom-width: 0;
+}
+
+#gzbpnyetta .gt_subtitle {
+  color: #333333;
+  font-size: 85%;
+  font-weight: initial;
+  padding-top: 0;
+  padding-bottom: 6px;
+  border-top-color: #FFFFFF;
+  border-top-width: 0;
+}
+
+#gzbpnyetta .gt_bottom_border {
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#gzbpnyetta .gt_col_headings {
+  border-top-style: none;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: none;
+  border-bottom-width: 1px;
+  border-bottom-color: #334422;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#gzbpnyetta .gt_col_heading {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 6px;
+  padding-left: 5px;
+  padding-right: 5px;
+  overflow-x: hidden;
+}
+
+#gzbpnyetta .gt_column_spanner_outer {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  padding-top: 0;
+  padding-bottom: 0;
+  padding-left: 4px;
+  padding-right: 4px;
+}
+
+#gzbpnyetta .gt_column_spanner_outer:first-child {
+  padding-left: 0;
+}
+
+#gzbpnyetta .gt_column_spanner_outer:last-child {
+  padding-right: 0;
+}
+
+#gzbpnyetta .gt_column_spanner {
+  border-bottom-style: none;
+  border-bottom-width: 1px;
+  border-bottom-color: #334422;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  overflow-x: hidden;
+  display: inline-block;
+  width: 100%;
+}
+
+#gzbpnyetta .gt_group_heading {
+  padding: 8px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-top-style: none;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+}
+
+#gzbpnyetta .gt_empty_group_heading {
+  padding: 0.5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  border-top-style: none;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: middle;
+}
+
+#gzbpnyetta .gt_from_md > :first-child {
+  margin-top: 0;
+}
+
+#gzbpnyetta .gt_from_md > :last-child {
+  margin-bottom: 0;
+}
+
+#gzbpnyetta .gt_row {
+  padding-top: 7px;
+  padding-bottom: 7px;
+  padding-left: 5px;
+  padding-right: 5px;
+  margin: 10px;
+  border-top-style: none;
+  border-top-width: 1px;
+  border-top-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  overflow-x: hidden;
+}
+
+#gzbpnyetta .gt_stub {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 12px;
+}
+
+#gzbpnyetta .gt_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#gzbpnyetta .gt_first_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-style: none;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+}
+
+#gzbpnyetta .gt_grand_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#gzbpnyetta .gt_first_grand_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-style: none;
+  border-top-width: 6px;
+  border-top-color: #D3D3D3;
+}
+
+#gzbpnyetta .gt_striped {
+  background-color: rgba(128, 128, 128, 0.05);
+}
+
+#gzbpnyetta .gt_table_body {
+  border-top-style: none;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #FFFFFF;
+}
+
+#gzbpnyetta .gt_footnotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#gzbpnyetta .gt_footnote {
+  margin: 0px;
+  font-size: 90%;
+  padding: 4px;
+}
+
+#gzbpnyetta .gt_sourcenotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#gzbpnyetta .gt_sourcenote {
+  font-size: 90%;
+  padding: 4px;
+}
+
+#gzbpnyetta .gt_left {
+  text-align: left;
+}
+
+#gzbpnyetta .gt_center {
+  text-align: center;
+}
+
+#gzbpnyetta .gt_right {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+#gzbpnyetta .gt_font_normal {
+  font-weight: normal;
+}
+
+#gzbpnyetta .gt_font_bold {
+  font-weight: bold;
+}
+
+#gzbpnyetta .gt_font_italic {
+  font-style: italic;
+}
+
+#gzbpnyetta .gt_super {
+  font-size: 65%;
+}
+
+#gzbpnyetta .gt_footnote_marks {
+  font-style: italic;
+  font-weight: normal;
+  font-size: 65%;
+}
+</style>
+<table class="gt_table">
+  
+  <thead class="gt_col_headings">
+    <tr>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1"></th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" style="color: #A9A9A9; font-family: &#39;Source Sans Pro&#39;; font-size: 12px; text-transform: uppercase;"></th>
+    </tr>
+  </thead>
+  <tbody class="gt_table_body">
+    <tr class="gt_group_heading_row">
+      <td colspan="2" class="gt_group_heading" style="border-bottom-width: 3px; border-bottom-style: solid; border-bottom-color: black; color: #000000; font-weight: bold; background-color: #D3D3D3;">Documents</td>
+    </tr>
+    <tr><td class="gt_row gt_left gt_stub" style="font-family: 'Fira Mono';"><a href ='https://bookdown.org/yihui/rmarkdown/notebook.html' style='text-decoration:none;' target='_blank'>
+Notebook</a></td>
+<td class="gt_row gt_left" style="font-family: 'Source Sans Pro'; font-weight: 400;">Interactive R Notebooks</td></tr>
+    <tr><td class="gt_row gt_left gt_stub" style="font-family: 'Fira Mono';"><a href ='https://bookdown.org/yihui/rmarkdown/html-document.html' style='text-decoration:none;' target='_blank'>
+HTML</a></td>
+<td class="gt_row gt_left" style="font-family: 'Source Sans Pro'; font-weight: 400;">HTML document w/ Bootstrap CSS</td></tr>
+    <tr><td class="gt_row gt_left gt_stub" style="font-family: 'Fira Mono';"><a href ='https://bookdown.org/yihui/rmarkdown/pdf-document.html' style='text-decoration:none;' target='_blank'>
+PDF</a></td>
+<td class="gt_row gt_left" style="font-family: 'Source Sans Pro'; font-weight: 400;">PDF document (via LaTeX template)</td></tr>
+    <tr><td class="gt_row gt_left gt_stub" style="font-family: 'Fira Mono';"><a href ='https://bookdown.org/yihui/rmarkdown/word-document.html' style='text-decoration:none;' target='_blank'>
+Word</a></td>
+<td class="gt_row gt_left" style="font-family: 'Source Sans Pro'; font-weight: 400;">Microsoft Word document (docx)</td></tr>
+    <tr><td class="gt_row gt_left gt_stub" style="font-family: 'Fira Mono';"><a href ='https://bookdown.org/yihui/rmarkdown/opendocument-text-document.html' style='text-decoration:none;' target='_blank'>
+ODT</a></td>
+<td class="gt_row gt_left" style="font-family: 'Source Sans Pro'; font-weight: 400;">OpenDocument Text document</td></tr>
+    <tr><td class="gt_row gt_left gt_stub" style="font-family: 'Fira Mono';"><a href ='https://bookdown.org/yihui/rmarkdown/rich-text-format-document.html' style='text-decoration:none;' target='_blank'>
+RTF</a></td>
+<td class="gt_row gt_left" style="font-family: 'Source Sans Pro'; font-weight: 400;">Rich Text Format document</td></tr>
+    <tr><td class="gt_row gt_left gt_stub" style="font-family: 'Fira Mono';"><a href ='https://bookdown.org/yihui/rmarkdown/markdown-document.html' style='text-decoration:none;' target='_blank'>
+Markdown</a></td>
+<td class="gt_row gt_left" style="font-family: 'Source Sans Pro'; font-weight: 400;">Markdown document (various flavors)</td></tr>
+    <tr class="gt_group_heading_row">
+      <td colspan="2" class="gt_group_heading" style="border-bottom-width: 3px; border-bottom-style: solid; border-bottom-color: black; color: #000000; font-weight: bold; background-color: #D3D3D3;">Presentations</td>
+    </tr>
+    <tr><td class="gt_row gt_left gt_stub" style="font-family: 'Fira Mono';"><a href ='https://bookdown.org/yihui/rmarkdown/ioslides-presentation.html' style='text-decoration:none;' target='_blank'>
+ioslides</a></td>
+<td class="gt_row gt_left" style="font-family: 'Source Sans Pro'; font-weight: 400;">HTML presentation with ioslides</td></tr>
+    <tr><td class="gt_row gt_left gt_stub" style="font-family: 'Fira Mono';"><a href ='https://bookdown.org/yihui/rmarkdown/revealjs.html' style='text-decoration:none;' target='_blank'>
+reveal.js</a></td>
+<td class="gt_row gt_left" style="font-family: 'Source Sans Pro'; font-weight: 400;">HTML presentation with reveal.js</td></tr>
+    <tr><td class="gt_row gt_left gt_stub" style="font-family: 'Fira Mono';"><a href ='https://bookdown.org/yihui/rmarkdown/slidy-presentation.html' style='text-decoration:none;' target='_blank'>
+Slidy</a></td>
+<td class="gt_row gt_left" style="font-family: 'Source Sans Pro'; font-weight: 400;">HTML presentation with W3C Slidy</td></tr>
+    <tr><td class="gt_row gt_left gt_stub" style="font-family: 'Fira Mono';"><a href ='https://bookdown.org/yihui/rmarkdown/beamer-presentation.html' style='text-decoration:none;' target='_blank'>
+Beamer</a></td>
+<td class="gt_row gt_left" style="font-family: 'Source Sans Pro'; font-weight: 400;">PDF presentation with LaTeX Beamer</td></tr>
+    <tr><td class="gt_row gt_left gt_stub" style="font-family: 'Fira Mono';"><a href ='https://bookdown.org/yihui/rmarkdown/powerpoint-presentation.html' style='text-decoration:none;' target='_blank'>
+PowerPoint</a></td>
+<td class="gt_row gt_left" style="font-family: 'Source Sans Pro'; font-weight: 400;">PowerPoint presentation</td></tr>
+  </tbody>
+  
+  
+</table>
+</div>
+
+]
+
+--
+
+.pull-right[
+
+<div id="kwryjverif" style="overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>@import url("https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Fira+Mono:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Source+Sans+Pro:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Libre+Franklin:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Source+Sans+Pro:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
+html {
+  font-family: 'Open Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Helvetica Neue', 'Fira Sans', 'Droid Sans', Arial, sans-serif;
+}
+
+#kwryjverif .gt_table {
+  display: table;
+  border-collapse: collapse;
+  margin-left: auto;
+  margin-right: auto;
+  color: #333333;
+  font-size: 16px;
+  font-weight: normal;
+  font-style: none;
+  background-color: #FFFFFF;
+  width: auto;
+  border-top-style: none;
+  border-top-width: 2px;
+  border-top-color: #A8A8A8;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #A8A8A8;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+}
+
+#kwryjverif .gt_heading {
+  background-color: #FFFFFF;
+  text-align: left;
+  border-bottom-color: #FFFFFF;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#kwryjverif .gt_title {
+  color: #333333;
+  font-size: 125%;
+  font-weight: initial;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  border-bottom-color: #FFFFFF;
+  border-bottom-width: 0;
+}
+
+#kwryjverif .gt_subtitle {
+  color: #333333;
+  font-size: 85%;
+  font-weight: initial;
+  padding-top: 0;
+  padding-bottom: 6px;
+  border-top-color: #FFFFFF;
+  border-top-width: 0;
+}
+
+#kwryjverif .gt_bottom_border {
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#kwryjverif .gt_col_headings {
+  border-top-style: none;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: none;
+  border-bottom-width: 1px;
+  border-bottom-color: #334422;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#kwryjverif .gt_col_heading {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 6px;
+  padding-left: 5px;
+  padding-right: 5px;
+  overflow-x: hidden;
+}
+
+#kwryjverif .gt_column_spanner_outer {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  padding-top: 0;
+  padding-bottom: 0;
+  padding-left: 4px;
+  padding-right: 4px;
+}
+
+#kwryjverif .gt_column_spanner_outer:first-child {
+  padding-left: 0;
+}
+
+#kwryjverif .gt_column_spanner_outer:last-child {
+  padding-right: 0;
+}
+
+#kwryjverif .gt_column_spanner {
+  border-bottom-style: none;
+  border-bottom-width: 1px;
+  border-bottom-color: #334422;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  overflow-x: hidden;
+  display: inline-block;
+  width: 100%;
+}
+
+#kwryjverif .gt_group_heading {
+  padding: 8px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-top-style: none;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+}
+
+#kwryjverif .gt_empty_group_heading {
+  padding: 0.5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  border-top-style: none;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: middle;
+}
+
+#kwryjverif .gt_from_md > :first-child {
+  margin-top: 0;
+}
+
+#kwryjverif .gt_from_md > :last-child {
+  margin-bottom: 0;
+}
+
+#kwryjverif .gt_row {
+  padding-top: 7px;
+  padding-bottom: 7px;
+  padding-left: 5px;
+  padding-right: 5px;
+  margin: 10px;
+  border-top-style: none;
+  border-top-width: 1px;
+  border-top-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  overflow-x: hidden;
+}
+
+#kwryjverif .gt_stub {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 12px;
+}
+
+#kwryjverif .gt_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#kwryjverif .gt_first_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-style: none;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+}
+
+#kwryjverif .gt_grand_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#kwryjverif .gt_first_grand_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-style: none;
+  border-top-width: 6px;
+  border-top-color: #D3D3D3;
+}
+
+#kwryjverif .gt_striped {
+  background-color: rgba(128, 128, 128, 0.05);
+}
+
+#kwryjverif .gt_table_body {
+  border-top-style: none;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #FFFFFF;
+}
+
+#kwryjverif .gt_footnotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#kwryjverif .gt_footnote {
+  margin: 0px;
+  font-size: 90%;
+  padding: 4px;
+}
+
+#kwryjverif .gt_sourcenotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#kwryjverif .gt_sourcenote {
+  font-size: 90%;
+  padding: 4px;
+}
+
+#kwryjverif .gt_left {
+  text-align: left;
+}
+
+#kwryjverif .gt_center {
+  text-align: center;
+}
+
+#kwryjverif .gt_right {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+#kwryjverif .gt_font_normal {
+  font-weight: normal;
+}
+
+#kwryjverif .gt_font_bold {
+  font-weight: bold;
+}
+
+#kwryjverif .gt_font_italic {
+  font-style: italic;
+}
+
+#kwryjverif .gt_super {
+  font-size: 65%;
+}
+
+#kwryjverif .gt_footnote_marks {
+  font-style: italic;
+  font-weight: normal;
+  font-size: 65%;
+}
+</style>
+<table class="gt_table">
+  
+  <thead class="gt_col_headings">
+    <tr>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1"></th>
+      <th class="gt_col_heading gt_columns_bottom_border gt_left" rowspan="1" colspan="1" style="color: #A9A9A9; font-family: &#39;Source Sans Pro&#39;; font-size: 12px; text-transform: uppercase;"></th>
+    </tr>
+  </thead>
+  <tbody class="gt_table_body">
+    <tr class="gt_group_heading_row">
+      <td colspan="2" class="gt_group_heading" style="border-bottom-width: 3px; border-bottom-style: solid; border-bottom-color: black; color: #000000; font-weight: bold; background-color: #D3D3D3;">Journals</td>
+    </tr>
+    <tr><td class="gt_row gt_left gt_stub" style="font-family: 'Fira Mono';"><a href ='https://rstudio.github.io/distill/' style='text-decoration:none;' target='_blank'>
+distill</a></td>
+<td class="gt_row gt_left" style="font-family: 'Source Sans Pro'; font-weight: 400;">Scientific and technical writing for the web</td></tr>
+    <tr><td class="gt_row gt_left gt_stub" style="font-family: 'Fira Mono';"><a href ='https://github.com/rstudio/rticles' style='text-decoration:none;' target='_blank'>
+jss_article</a></td>
+<td class="gt_row gt_left" style="font-family: 'Source Sans Pro'; font-weight: 400;">Journal of Statistical Software (JSS)</td></tr>
+    <tr><td class="gt_row gt_left gt_stub" style="font-family: 'Fira Mono';"><a href ='https://github.com/rstudio/rticles' style='text-decoration:none;' target='_blank'>
+acm_article</a></td>
+<td class="gt_row gt_left" style="font-family: 'Source Sans Pro'; font-weight: 400;">Association for Computing Machinery (ACM)</td></tr>
+    <tr><td class="gt_row gt_left gt_stub" style="font-family: 'Fira Mono';"><a href ='https://github.com/rstudio/rticles' style='text-decoration:none;' target='_blank'>
+acs_article</a></td>
+<td class="gt_row gt_left" style="font-family: 'Source Sans Pro'; font-weight: 400;">American Chemical Society (ACS) Journal</td></tr>
+    <tr><td class="gt_row gt_left gt_stub" style="font-family: 'Fira Mono';"><a href ='https://github.com/rstudio/rticles' style='text-decoration:none;' target='_blank'>
+ctex</a></td>
+<td class="gt_row gt_left" style="font-family: 'Source Sans Pro'; font-weight: 400;">Documents based on the LaTeX package ctex</td></tr>
+    <tr><td class="gt_row gt_left gt_stub" style="font-family: 'Fira Mono';"><a href ='https://github.com/rstudio/rticles' style='text-decoration:none;' target='_blank'>
+elsevier_article</a></td>
+<td class="gt_row gt_left" style="font-family: 'Source Sans Pro'; font-weight: 400;">Submissions to Elsevier journals</td></tr>
+    <tr class="gt_group_heading_row">
+      <td colspan="2" class="gt_group_heading" style="border-bottom-width: 3px; border-bottom-style: solid; border-bottom-color: black; color: #000000; font-weight: bold; background-color: #D3D3D3;">More</td>
+    </tr>
+    <tr><td class="gt_row gt_left gt_stub" style="font-family: 'Fira Mono';"><a href ='flexdashboard/index.html' style='text-decoration:none;' target='_blank'>
+flexdashboard</a></td>
+<td class="gt_row gt_left" style="font-family: 'Source Sans Pro'; font-weight: 400;">Interactive dashboards</td></tr>
+    <tr><td class="gt_row gt_left gt_stub" style="font-family: 'Fira Mono';"><a href ='https://bookdown.org' style='text-decoration:none;' target='_blank'>
+bookdown</a></td>
+<td class="gt_row gt_left" style="font-family: 'Source Sans Pro'; font-weight: 400;">HTML, PDF, ePub, and Kindle books</td></tr>
+    <tr><td class="gt_row gt_left gt_stub" style="font-family: 'Fira Mono';"><a href ='https://bookdown.org/yihui/rmarkdown/rmarkdown-site.html' style='text-decoration:none;' target='_blank'>
+Websites</a></td>
+<td class="gt_row gt_left" style="font-family: 'Source Sans Pro'; font-weight: 400;">Multi-page websites</td></tr>
+    <tr><td class="gt_row gt_left gt_stub" style="font-family: 'Fira Mono';"><a href ='https://bookdown.org/yihui/blogdown/' style='text-decoration:none;' target='_blank'>
+blogdown</a></td>
+<td class="gt_row gt_left" style="font-family: 'Source Sans Pro'; font-weight: 400;">Customizable websites and blogs</td></tr>
+    <tr><td class="gt_row gt_left gt_stub" style="font-family: 'Fira Mono';"><a href ='https://pkgdown.r-lib.org/' style='text-decoration:none;' target='_blank'>
+pkgdown</a></td>
+<td class="gt_row gt_left" style="font-family: 'Source Sans Pro'; font-weight: 400;">Package documentation websites</td></tr>
+    <tr><td class="gt_row gt_left gt_stub" style="font-family: 'Fira Mono';"><a href ='https://bookdown.org/yihui/rmarkdown/tufte-handouts.html' style='text-decoration:none;' target='_blank'>
+Tufte Handout</a></td>
+<td class="gt_row gt_left" style="font-family: 'Source Sans Pro'; font-weight: 400;">Handouts in the style of Edward Tufte</td></tr>
+    <tr><td class="gt_row gt_left gt_stub" style="font-family: 'Fira Mono';"><a href ='https://bookdown.org/yihui/rmarkdown/r-package-vignette.html' style='text-decoration:none;' target='_blank'>
+Package Vignette</a></td>
+<td class="gt_row gt_left" style="font-family: 'Source Sans Pro'; font-weight: 400;">R package vignette (HTML)</td></tr>
+    <tr><td class="gt_row gt_left gt_stub" style="font-family: 'Fira Mono';"><a href ='github_document_format.html' style='text-decoration:none;' target='_blank'>
+Github Document</a></td>
+<td class="gt_row gt_left" style="font-family: 'Source Sans Pro'; font-weight: 400;">GitHub Flavored Markdown document.</td></tr>
+  </tbody>
+  
+  
+</table>
+</div>
+
+]
+
+---
+
+### Remember, it's all just code!
+
+The different outputs are used for their specific purposes, but remember that the _way_ of writing, adding code, etc is shared across them all!
+
+--
+
+Learn RMarkdown and R, and you can use your code to generate:  
+
+- Plots  
+- Tables  
+- Text  
+- Reports  
+- Presentations  
+- Websites  
+- Books  
+- Whatever you can think of!  
+
+---
+
+### `html_document`
+
+The "workhorse" of RMarkdown, this is the default format. Amazing amount of power in HTML and has the richest feature set.
+
+[RMarkdown - html_document](https://bookdown.org/yihui/rmarkdown/html-document.html)
+
+--
+
+### `pdf_document`
+
+Useful when you prefer LaTeX instead of HTML, or if you need PDF as an output.
+
+[RMarkdown - pdf_document](https://bookdown.org/yihui/rmarkdown/html-document.html)
+
+---
+
+## Office compliance
+
+The Office standards, but created programatically with R and RMarkdown!
+
+--
+
+### `word_document`
+
+[RMarkdown word_document](https://bookdown.org/yihui/rmarkdown/word-document.html)
+
+### `powerpoint`
+
+[RMarkdown powerpoint](https://bookdown.org/yihui/rmarkdown/powerpoint-presentation.html)
+
+---
+
+### `xaringan`
+
+Exceptionally powerful/beautiful presentations created with RMarkdown.
+
+[RMarkdown xaringan](https://bookdown.org/yihui/rmarkdown/xaringan.html)
+
+---
+
+### `distill`
+
+My personal favorite format, scientific writing native to the web!
+
+&gt; Distill for R Markdown is a web publishing format optimized for scientific and technical communication. Distill articles include:
+
+- Reader-friendly typography that adapts well to mobile devices.  
+- Features essential to technical writing like LaTeX math, citations, and footnotes.  
+- Flexible figure layout options (e.g. displaying figures at a larger width than the article text).  
+- Attractively rendered tables with optional support for pagination.  
+- Support for a wide variety of diagramming tools for illustrating concepts.  
+- The ability to incorporate JavaScript and D3-based interactive visualizations.  
+- A variety of ways to publish articles, including support for publishing sets of articles as a Distill website or as a Distill blog.  
+
+[Distill for RMarkdown](https://rstudio.github.io/distill/)
+
+---
+
+### `bookdown`
+
+Write entire _books_ in RMarkdown! The RMarkdown book itself was written this way.
+
+[RMarkdown bookdown](https://bookdown.org/yihui/rmarkdown/books.html)
+
+---
+
+### Resources
+
+- [RMarkdown Homepage](https://rmarkdown.rstudio.com/)  
+- [RMarkdown package docs](https://rmarkdown.rstudio.com/docs/)  
+- [RMarkdown learning track](https://rmarkdown.rstudio.com/lesson-1.html)  
+- [RMarkdown: The Definitive Guide](https://bookdown.org/yihui/rmarkdown/)  
+- [The RMarkdown Cookbook](https://bookdown.org/yihui/rmarkdown-cookbook/)  
+- [Visual RMarkdown Guide](https://rstudio.github.io/visual-markdown-editing/)  
+- [R4DS Rmarkdown - Communicate](https://r4ds.had.co.nz/r-markdown.html)  
+- [RMarkdown Driven Development](https://www.rstudio.com/resources/rstudioconf-2020/rmarkdown-driven-development/)  
+-[RMarkdown for Scientists](https://rmd4sci.njtierney.com/)  
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script src="https://platform.twitter.com/widgets.js"></script>
+<script>var slideshow = remark.create({
+"ratio": "16:9",
+"highlightStyle": "dracula",
+"highlightLines": false,
+"countIncrementalSlides": false
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>
