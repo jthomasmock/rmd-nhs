@@ -32,8 +32,8 @@ meta() %>%
     title = "RMarkdown for reproducible reporting",
     description = 
       "An introduction to the RMarkdown package for reproducible reporting in RStudio",
-    url = "https://jthomasmock.github.io/rmd-nhs/index.html",
-    image = "https://images.unsplash.com/photo-1436918898788-ebce04d38e46?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1471&q=80",
+    url = "https://jthomasmock.github.io/rmd-nhs/",
+    image = "https://images.unsplash.com/photo-1603204254626-d0de8eb24cf1?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1471&q=80",
     og_type = "website",
     og_author = "Tom Mock",
     twitter_card_type = "summary_large_image",
@@ -66,15 +66,15 @@ class: title-slide, left, top
 
 layout: true
 
-<div class="my-footer"><span>colorado.rstudio.com/rsc/cs-prez/</span></div>
+<div class="my-footer"><span>jthomasmock.github.io/rmd-nhs/</span></div>
 
 ---
 
-# Resources:
+# Resources
 
-### RStudio Cloud materials
+### Workshop materials: [on Github](https://github.com/jthomasmock/rmd-nhs/tree/master/workshop)
 
-### Slides: 
+### Slides: [jthomasmock.github.io/rmd-nhs/](https://jthomasmock.github.io/rmd-nhs/)
 
 Some content adapted from superstar Dr. Alison Hill [CDC](https://www.apreshill.com/talk/2020-rmd4cdc/) & [R4Pharma](https://rmd4pharma.netlify.app/): CC-BY
 
@@ -540,7 +540,36 @@ knitr::include_graphics("images/rstudio-headers.png")
 
 ---
 
+### More than _just_ text
 
+You can inline R code, so that you can programatically generate specific components of the document.
+
+--
+
+IE I can report that there are `r knitr::inline_expr("nrow(mtcars)")` 
+
+--
+
+Which returns `r nrow(mtcars)`.
+
+--
+
+These inline texts can be as complex or simple as you like, and can also return R objects.
+
+```{r}
+car_rows <- glue::glue("There are {nrow(mtcars)} rows in the `mtcars` dataset.")
+```
+
+--
+
+`r knitr::inline_expr("car_rows")` 
+
+--
+
+`r car_rows`
+
+
+---
 
 .pull-left[
 
@@ -1105,6 +1134,12 @@ SELECT * FROM trials
 names(knitr::knit_engines$get())
 ```
 
+---
+class: center, middle
+
+# `r emo::ji("timer")`  
+
+# Time for a break!  
 
 ---
 
@@ -1334,14 +1369,6 @@ knitr::include_graphics("images/rmd-run.png")
 
 ### 🧶 early, 🧶 often  
 
-
----
-class: center, middle
-
-# `r emo::ji("timer")`  
-
-# Time for a break!  
-
 ---
 
 class: center, middle, inverse
@@ -1463,9 +1490,9 @@ Also see:
 ### Figure resolution
 
 .pull-left[
-`{r, dpi = 72, fig.dim = c(5,3)}`
+`{r, dpi = 72, fig.width = 5}`
 
-```{r surv-plot, eval = TRUE, dpi=72, echo=FALSE, fig.dim = c(5,3)}
+```{r surv-plot, eval = TRUE, dpi=72, echo=FALSE, fig.width=5}
 ```
 
 ]
@@ -1474,9 +1501,9 @@ Also see:
 
 
 .pull-left[
-`{r, dpi = 300, fig.dim = c(5,3)}`
+`{r, dpi = 300, fig.width = 5}`
 
-```{r surv-plot, eval = TRUE, dpi=300,echo=FALSE, fig.dim = c(5,3)}
+```{r surv-plot, eval = TRUE, dpi=300,echo=FALSE, fig.width=5}
 ```
 
 
@@ -1488,9 +1515,9 @@ Also see:
 
 
 .pull-left[
-`{r, dpi = 72, fig.dim = c(5,3)}`
+`{r, dpi = 72, fig.width = 4}`
 
-```{r surv-plot, eval = TRUE, dpi=72,echo=FALSE, fig.dim = c(5,3)}
+```{r surv-plot, eval = TRUE, dpi=50,echo=FALSE, fig.width=4}
 ```
 
 ]
@@ -1498,9 +1525,9 @@ Also see:
 --
 
 .pull-right[
-`{r, fig.retina=3, fig.dim = c(5,3)}`
+`{r, fig.retina=3, fig.width=4}`
 
-```{r surv-plot, eval = TRUE, fig.retina=3,echo=FALSE, fig.dim = c(5,3)}
+```{r surv-plot, eval = TRUE, fig.retina=3,echo=FALSE, fig.width=4}
 ```
 
 ]
@@ -1604,7 +1631,8 @@ surv_days_plot + age_histogram
 
 ```{r, fig.dim=c(8,4), fig.retina=1}
 # using fig.dim=c(8,4), fig.retina=1
-surv_days_plot + age_histogram + plot_annotation(tag_levels = "A")
+surv_days_plot + age_histogram + 
+  plot_annotation(tag_levels = "A") # can set the tagging
 ```
 
 ---
@@ -1613,7 +1641,8 @@ surv_days_plot + age_histogram + plot_annotation(tag_levels = "A")
 
 ```{r, fig.dim=c(8,4), fig.retina=1}
 # using fig.dim=c(8,4), fig.retina=1
-surv_days_plot + age_histogram + plot_annotation(tag_levels = "1")
+surv_days_plot + age_histogram + 
+  plot_annotation(tag_levels = "1") # can alter the tagging
 ```
 
 
@@ -1621,23 +1650,47 @@ surv_days_plot + age_histogram + plot_annotation(tag_levels = "1")
 
 ### Saving plots
 
-`fig.path`
+`fig.path` - an alternative to calling `ggsave()` over and over!
+
+--
+
+<blockquote class="twitter-tweet"><p lang="en" dir="ltr">I would encourage a past Silvia to experiment with code chunk options like dev=c(&quot;png&quot;, &quot;pdf&quot;) and fig.path to streamline saving plots when knitting<br><br>Past Silvia used to specify these things using ggsave() lines after each ggplot, and that eventually became cumbersome ☺️</p>&mdash; Silvia Canelón (@spcanelon) <a href="https://twitter.com/spcanelon/status/1333888658022281218?ref_src=twsrc%5Etfw">December 1, 2020</a></blockquote> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
 
 ---
 
 ## A global `setup` chunk
 
+.pull-left[
 ````
 ```{r setup, include = FALSE}`r ''`
 knitr::opts_chunk$set(
   warning = FALSE,
   message = FALSE,
   echo = FALSE,
-  fig.retina = 3,
+  fig.retina = 2,
+  fig.width = 6,
   fig.path = here::here("tom-figs/")
 )
 ```
 ````
+
+]
+
+--
+
+.pull-right[
+- No messages/warnings in my final report  
+- No code returning, unless I explicitly override  
+- High quality figures of a decent width  
+- Save my figures out to a specific directory  
+
+
+]
+
+--
+
+You should experiment with your "defaults" so that you have to minimally change the individual chunks.
+
 
 ---
 
@@ -1716,9 +1769,10 @@ select(trial, age, marker) %>%
 ---
 
 
-### Examples
 
 .pull-left[
+
+### Examples
 
 ```{r}
 t1 <-
@@ -1746,7 +1800,8 @@ combo_tab <- tbl_merge(
 ```{r, echo = FALSE}
 tbl_merge(
   tbls = list(t1, t2),
-  tab_spanner = c("**Tumor Response**", "**Time to Death**")
+  tab_spanner = c("**Tumor Response**", 
+                  "**Time to Death**")
 )
 ```
 
@@ -1754,12 +1809,107 @@ tbl_merge(
 ]-
 
 ---
+.pull-left[
+### [10 Guidelines for Better Tables in R](https://themockup.blog/posts/2020-09-04-10-table-rules-in-r/)
 
-### Table best practices
+]
 
-[10 Guidelines for Better Tables in R](https://themockup.blog/posts/2020-09-04-10-table-rules-in-r/)
-
+.pull-right[
 <blockquote class="twitter-tweet"><p lang="en" dir="ltr">I recently published &quot;Ten Guidelines for Better Tables&quot; in the Journal of Benefit Cost Analysis (<a href="https://twitter.com/benefitcost?ref_src=twsrc%5Etfw">@benefitcost</a>) on ways to improve your data tables. <br><br>Here&#39;s a thread summarizing the 10 guidelines. <br><br>Full paper is here: <a href="https://t.co/VSGYnfg7iP">https://t.co/VSGYnfg7iP</a> <a href="https://t.co/W6qbsktioL">pic.twitter.com/W6qbsktioL</a></p>&mdash; Jon Schwabish (@jschwabish) <a href="https://twitter.com/jschwabish/status/1290323581881266177?ref_src=twsrc%5Etfw">August 3, 2020</a></blockquote> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+
+]
+
+---
+
+class: inverse, middle, center
+
+# Meta RMarkdown
+
+---
+
+
+.pull-left[
+
+### Using RMarkdown `parameters`
+
+```{yaml, eval = FALSE, echo = TRUE}
+---
+title: Visualizing the Ocean Floor
+output: html_document
+params:
+    state: "hawaii"
+---
+```
+
+]
+
+--
+
+.pull-right[
+
+You can reference parameters inline, ie `r knitr::inline_expr("params$data")` which returns `"hawaii"` as the result. 
+
+Or, can be used in normal chunks:
+
+```{r, eval = FALSE}
+ocean_data %>% 
+  filter(state == params$state) %>% 
+  autoplot()
+```
+
+
+]
+
+---
+
+
+.pull-left[
+
+### Using RMarkdown `parameters`
+
+```{yaml, eval = FALSE}
+---
+title: My Document
+output: html_document
+params:
+  days:
+    label: "Number of Previous Days"
+    value: 90
+    input: slider
+    min: 30
+    max: 360
+  region:
+    label: "Region:"
+    value: Europe
+    input: select
+    choices: [North America, Europe, Asia, Africa]
+---
+```
+
+
+]
+
+--
+
+.pull-right[
+
+Can also create `shiny` "modals" inside RStudio, via `knit with parameters`
+
+```{r, echo=FALSE, out.width="60%"}
+knitr::include_graphics("https://docs.rstudio.com/connect/1.7.4/user/images/param-rmarkdown/param-widgets.png")
+```
+
+]
+
+---
+
+### More details on parameters and workflow
+
+- [RMarkdown book, parameterized reports](https://bookdown.org/yihui/rmarkdown/parameterized-reports.html)  
+
+- [RMarkdown Cookbook, Parameterized reports](https://bookdown.org/yihui/rmarkdown-cookbook/parameterized-reports.html)  
+
+- [Advanced RMarkdown webinar](https://www.youtube.com/watch?v=WkF7nqEYF1E)  
 
 ---
 
@@ -1769,10 +1919,10 @@ class: center, middle, inverse
 
 ---
 
+.pull-left[
 ### Many [RMarkdown Formats](https://rmarkdown.rstudio.com/formats.html)
 
 
-.pull-left[
 ```{r, echo = FALSE}
 paste_table()
 ```
@@ -1879,11 +2029,19 @@ Write entire _books_ in RMarkdown! The RMarkdown book itself was written this wa
 ### Resources
 
 - [RMarkdown Homepage](https://rmarkdown.rstudio.com/)  
+
 - [RMarkdown package docs](https://rmarkdown.rstudio.com/docs/)  
+
 - [RMarkdown learning track](https://rmarkdown.rstudio.com/lesson-1.html)  
+
 - [RMarkdown: The Definitive Guide](https://bookdown.org/yihui/rmarkdown/)  
+
 - [The RMarkdown Cookbook](https://bookdown.org/yihui/rmarkdown-cookbook/)  
+
 - [Visual RMarkdown Guide](https://rstudio.github.io/visual-markdown-editing/)  
+
 - [R4DS Rmarkdown - Communicate](https://r4ds.had.co.nz/r-markdown.html)  
+
 - [RMarkdown Driven Development](https://www.rstudio.com/resources/rstudioconf-2020/rmarkdown-driven-development/)  
--[RMarkdown for Scientists](https://rmd4sci.njtierney.com/)  
+
+- [RMarkdown for Scientists](https://rmd4sci.njtierney.com/)  

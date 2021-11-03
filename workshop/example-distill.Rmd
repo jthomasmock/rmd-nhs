@@ -1,0 +1,173 @@
+---
+title: "Distill basics"
+subtitle: "Scientific and technical writing, native to the web"
+output: 
+  distill::distill_article:
+    author:
+      - first_name: Thomas
+        last_name: Mock
+        url: https://themockup.blog
+    toc: true
+    toc_depth: 3
+    toc_float: true
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(
+  echo = TRUE,
+  code_folding = TRUE,
+  fig.retina = 2
+)
+```
+
+
+## Package Setup
+
+Before going through the tutorial, install and load {gtsummary}.
+
+```{r pkg-setup, message = FALSE, warning=FALSE}
+library(tidyverse)
+library(gt)
+library(gtExtras)
+library(gtsummary)
+library(palmerpenguins)
+```
+
+## Figures
+
+Distill provides a number of options for laying out figures within your article. By default figures span the width of the main article body. We can show the examples via the `palmerpenguins` dataset. The palmerpenguins data contains size measurements for three penguin species observed on three islands in the Palmer Archipelago, Antarctica. <br>These data were collected from 2007 - 2009 by Dr. Kristen Gorman with the Palmer Station Long Term Ecological Research Program, part of the US Long Term Ecological Research Network. The data were imported directly from the Environmental Data Initiative (EDI) Data Portal, and are available for use by CC0 license (“No Rights Reserved”) in accordance with the Palmer Station Data Policy.
+
+<aside>
+
+The palmerpenguins R package contains two datasets that we believe are a viable alternative to Anderson’s Iris data (see `datasets::iris`).
+
+```{r, echo = FALSE}
+#| fig.alt='The `palmerpenguins` R package hex logo, it is the three heads of the species of palmer penguins with the name "palmer penguins" in the top right'
+knitr::include_graphics("https://allisonhorst.github.io/palmerpenguins/man/figures/palmerpenguins.png")
+```
+
+</aside>
+
+### `l-body`
+
+The default, equal to the widt of the body of the text.
+
+```{r, layout="l-body"}
+bill_len_dep <- ggplot(data = penguins,
+                         aes(x = bill_length_mm,
+                             y = bill_depth_mm,
+                             group = species)) +
+  geom_point(aes(color = species,
+                 shape = species),
+             size = 3,
+             alpha = 0.8) +
+  geom_smooth(method = "lm", se = FALSE, aes(color = species)) +
+  theme_minimal() +
+  scale_color_manual(values = c("darkorange","purple","cyan4")) +
+  labs(title = "Penguin bill dimensions",
+       subtitle = "Bill length and depth for Adelie, Chinstrap and Gentoo Penguins at Palmer Station LTER",
+       x = "Bill length (mm)",
+       y = "Bill depth (mm)",
+       color = "Penguin species",
+       shape = "Penguin species") +
+  theme(legend.position = c(0.85, 0.15),
+        legend.background = element_rect(fill = "white", color = NA),
+        plot.title.position = "plot",
+        plot.caption = element_text(hjust = 0, face= "italic"),
+        plot.caption.position = "plot")
+
+bill_len_dep
+```
+
+### `l-body-outset`
+
+Slightly wider than the body.
+
+```{r, layout="l-body-outset"}
+mass_hist <- ggplot(data = penguins, aes(x = body_mass_g)) +
+  geom_histogram(aes(fill = species),
+                 alpha = 0.5,
+                 position = "identity") +
+  scale_fill_manual(values = c("darkorange","purple","cyan4")) +
+  theme_minimal() +
+  labs(x = "Body mass (g)",
+       y = "Frequency",
+       title = "Penguin body mass")
+
+mass_hist
+```
+
+### `l-page`
+
+Takes up the entire page.
+
+```{r, layout="l-page"}
+ggplot(penguins, aes(x = flipper_length_mm,
+                            y = body_mass_g)) +
+  geom_point(aes(color = sex)) +
+  theme_minimal() +
+  scale_color_manual(values = c("darkorange","cyan4"), na.translate = FALSE) +
+  labs(title = "Penguin flipper and body mass",
+       subtitle = "Dimensions for male and female Adelie, Chinstrap and Gentoo Penguins at Palmer Station LTER",
+       x = "Flipper length (mm)",
+       y = "Body mass (g)",
+       color = "Penguin sex") +
+  theme(legend.position = "bottom",
+        legend.background = element_rect(fill = "white", color = NA),
+        plot.title.position = "plot",
+        plot.caption = element_text(hjust = 0, face= "italic"),
+        plot.caption.position = "plot") +
+  facet_wrap(~species)
+```
+
+
+## Example data set
+
+We'll be using the [`trial`](http://www.danieldsjoberg.com/gtsummary/reference/trial.html) data set throughout this example.
+
+* This set contains data from `r nrow(trial)` patients who received one of two types of chemotherapy (Drug A or Drug B).
+The outcomes are tumor response and death.
+
+```{r}
+trial2 <-
+  trial %>%
+  select(trt, marker, stage)
+```
+
+
+### Inline results from tbl_summary()
+
+First create a basic summary table using [`tbl_summary()`](http://www.danieldsjoberg.com/gtsummary/reference/tbl_summary.html) (review [`tbl_summary()` vignette](http://www.danieldsjoberg.com/gtsummary/articles/tbl_summary.html) for detailed overview of this function if needed).
+
+```{r}
+tab1 <- tbl_summary(trial2, by = trt)
+tab1
+```
+
+
+> The median (IQR) marker level in the Drug A and Drug B groups are `r inline_text(tab1, variable = marker, column = "Drug A")` and `r inline_text(tab1, variable = marker, column = "Drug B")`, respectively.
+If you display a statistic from a categorical variable, include the `level` argument.
+
+
+### Inline results from tbl_regression()
+
+Similar syntax is used to report results from [`tbl_regression()`](http://www.danieldsjoberg.com/gtsummary/reference/tbl_regression.html) and [`tbl_uvregression()`](http://www.danieldsjoberg.com/gtsummary/reference/tbl_uvregression.html) tables.
+Refer to the [`tbl_regression()` vignette](http://www.danieldsjoberg.com/gtsummary/articles/tbl_regression.html) if you need detailed guidance on using these functions. 
+
+Let's first create a regression model.
+
+```{r}
+# build logistic regression model
+m1 <- glm(response ~ age + stage, trial, family = binomial(link = "logit"))
+```
+
+Now summarize the results with `tbl_regression()`; exponentiate to get the odds ratios.
+
+```{r}
+tbl_m1 <- tbl_regression(m1, exponentiate = TRUE)
+tbl_m1
+```
+
+> Age was not significantly associated with tumor response `r inline_text(tbl_m1, variable = age, pattern = "(OR {estimate}; 95% CI {conf.low}, {conf.high}; {p.value})")`.
+
+For more details about inline code, review to the  [RStudio documentation page](https://rmarkdown.rstudio.com/lesson-4.html).
