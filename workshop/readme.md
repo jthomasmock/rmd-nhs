@@ -9,3 +9,4 @@ The RMarkdown docs in this folder are largely examples of using `gtsummary` alon
 |`stats-html.Rmd`         | Output stats in html format |
 |`stats-pdf.Rmd`          | Output stats in PDF format  |
 |`stats-word.Rmd`         | Output stats in Word format  |
+| `example-distill.Rmd` | A quick example of `distill` format |
