@@ -52,7 +52,7 @@ class: title-slide, left, top
 
 ### `r Sys.Date()`
 
-<br>
+`r fontawesome::fa("github", "white")` [github.com/jthomasmock/rmd-nhs/](https://github.com/jthomasmock/rmd-nhs/tree/master/workshop)
 
 `r fontawesome::fa("link", "white")` [jthomasmock.github.io/rmd-nhs/index.html](https://jthomasmock.github.io/rmd-nhs/index.html)   
 
