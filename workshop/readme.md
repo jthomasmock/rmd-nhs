@@ -1,6 +1,8 @@
 # Workshop materials
 
-The RMarkdown docs in this folder are largely examples of using `gtsummary` along with various output formats.
+See the individual workshop folders (01, 02, 03, 04) for detailed examples of each sub-topic.
+
+The core RMarkdown docs in this folder are largely examples of using `gtsummary` along with various output formats.
 
 |File names  | Description|
 |:----------------------|:------------------- |
